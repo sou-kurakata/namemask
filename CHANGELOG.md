@@ -28,13 +28,13 @@
 - レビュー用の単一HTML出力（`--html`）
 - optional: NER層（GiNZA・追加専用・fail-safe・既定off）
 - optional: LLM検証パス（Ollama・追加専用・ループバック限定・既定off）
-- golden corpus 91ケース（架空名のみ）と評価ハーネス（`tests/eval.py`）
+- golden corpus 99ケース（架空名のみ）と評価ハーネス（`tests/eval.py`）
 
 ### Notes
 - 本リリースの範囲は**検出エンジンと CLI のみ**（ADR-0011）。
   ローカルレビューUIと Windows デスクトップ版は別プロジェクト。
 
-### 実測（決定的層＋住所層・91ケース）
+### 実測（決定的層＋住所層・99ケース）
 - precision 1.00 / 全体 recall 97.7% / round-trip 完全一致 100%
 
 [Unreleased]: https://github.com/sou-kurakata/namemask/compare/v0.1.0...HEAD

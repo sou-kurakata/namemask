@@ -185,7 +185,7 @@ make eval          # recall/precision が旧リポジトリと一致すること
 
 **旧リポジトリの数値と一致しなければ移行漏れ。** 特に確認:
 
-- golden corpus が 91ケースあるか
+- golden corpus が 99ケースあるか
   ```bash
   python -c "import json;print(len(json.load(open('tests/golden/corpus.json'))))"
   ```

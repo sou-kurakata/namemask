@@ -8,7 +8,7 @@
 
 ## Golden corpus
 
-`tests/golden/corpus.json` — **91ケース、すべて架空名。**
+`tests/golden/corpus.json` — **99ケース、すべて架空名。**
 
 <!-- TODO: ケースの構造（原文 / 正解スパン / nth によるオカレンス指定）、
      _build_corpus.py による surface 検証、ケースの選び方の方針を書く。 -->

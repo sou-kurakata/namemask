@@ -14,7 +14,7 @@
 - 中核は**決定的（deterministic）な検出パイプライン**: 正規化 → 正規表現 → 構造ルール →
   辞書(Aho-Corasick) → 住所 → スパン統合 → 置換。
 - NER（GiNZA）と LLM検証（Ollama）は**追加専用・既定 off の optional 層**。
-- 実測: golden corpus 91ケースで **precision 1.00 / recall 97.7%**（決定的層＋住所層）。
+- 実測: golden corpus 99ケースで **precision 1.00 / recall 97.7%**（決定的層＋住所層）。
 - レビューは `--html` が出力する**依存ゼロの単一HTML**（`review.py`）で行う。
 
 **このリポジトリの範囲は「検出エンジン + CLI」だけ。**

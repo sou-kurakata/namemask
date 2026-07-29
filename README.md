@@ -95,7 +95,7 @@ The library API keeps the mapping **in memory only** by default.
 
 ## Accuracy
 
-Measured on a golden corpus of **91 hand-labelled cases** (fictional names only),
+Measured on a golden corpus of **99 hand-labelled cases** (fictional names only),
 using the deterministic layers plus the address layer — no NER, no LLM:
 
 | Metric | Result |
@@ -166,7 +166,7 @@ These are invariants, not goals. They are enforced by tests.
 **Please read this before relying on namemask.**
 
 - **namemask does not guarantee 100% recall.** The measured figure is 97.7% on
-  91 cases. Unknown proper nouns — especially rare surnames, informal company
+  99 cases. Unknown proper nouns — especially rare surnames, informal company
   names, and project codenames — will be missed.
 - **Always have a human review the masked output.** namemask is designed as a
   review aid, not an automated gate. The optional local UI deliberately provides
