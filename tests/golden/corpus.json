@@ -1,0 +1,1273 @@
+[
+  {
+    "id": "org_pre_01",
+    "category": "org-prefix",
+    "text": "株式会社アオヤマ商事の件でご連絡いたしました。",
+    "entities": [
+      {
+        "surface": "株式会社アオヤマ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_pre_02",
+    "category": "org-prefix",
+    "text": "本日、有限会社ミドリ設計と打ち合わせを行いました。",
+    "entities": [
+      {
+        "surface": "有限会社ミドリ設計",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_pre_03",
+    "category": "org-prefix",
+    "text": "合同会社サクラソフトウェアより見積が届いています。",
+    "entities": [
+      {
+        "surface": "合同会社サクラソフトウェア",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_pre_04",
+    "category": "org-prefix",
+    "text": "一般社団法人ヒカリ協会の理事会に出席します。",
+    "entities": [
+      {
+        "surface": "一般社団法人ヒカリ協会",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_pre_05",
+    "category": "org-prefix",
+    "text": "医療法人カモメ会の担当者に確認をお願いします。",
+    "entities": [
+      {
+        "surface": "医療法人カモメ会",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_suf_01",
+    "category": "org-suffix",
+    "text": "ツバサ工業株式会社への発注書を作成しました。",
+    "entities": [
+      {
+        "surface": "ツバサ工業株式会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_suf_02",
+    "category": "org-suffix",
+    "text": "コハク物産有限会社の請求書を受領しました。",
+    "entities": [
+      {
+        "surface": "コハク物産有限会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_suf_03",
+    "category": "org-suffix",
+    "text": "ハルカゼ運輸合同会社と契約を締結しました。",
+    "entities": [
+      {
+        "surface": "ハルカゼ運輸合同会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_suf_04",
+    "category": "org-suffix",
+    "text": "セイリュウ建設株式会社の現場を視察しました。",
+    "entities": [
+      {
+        "surface": "セイリュウ建設株式会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_suf_05",
+    "category": "org-suffix",
+    "text": "ナナホシ食品株式会社より新製品の案内がありました。",
+    "entities": [
+      {
+        "surface": "ナナホシ食品株式会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_abbr_01",
+    "category": "org-abbr",
+    "text": "(株)キリシマ電機の田中様よりお電話がありました。",
+    "entities": [
+      {
+        "surface": "(株)キリシマ電機",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "田中",
+        "type": "PERSON"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_abbr_02",
+    "category": "org-abbr",
+    "text": "(有)ウミネコ商店の在庫を確認しました。",
+    "entities": [
+      {
+        "surface": "(有)ウミネコ商店",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_abbr_03",
+    "category": "org-abbr",
+    "text": "コンサルはヤマブキ総研(株)が担当します。",
+    "entities": [
+      {
+        "surface": "ヤマブキ総研(株)",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "org_abbr_04",
+    "category": "org-abbr",
+    "text": "（株）フジオカ製作所の納期は来週です。",
+    "entities": [
+      {
+        "surface": "（株）フジオカ製作所",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角括弧"
+  },
+  {
+    "id": "org_abbr_05",
+    "category": "org-abbr",
+    "text": "契約先は（有）シラユキ工房で確定しました。",
+    "entities": [
+      {
+        "surface": "（有）シラユキ工房",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角括弧"
+  },
+  {
+    "id": "org_glyph_01",
+    "category": "org-glyph",
+    "text": "㈱アカネテクノロジーとの提携を検討中です。",
+    "entities": [
+      {
+        "surface": "㈱アカネテクノロジー",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "㈱合字"
+  },
+  {
+    "id": "org_glyph_02",
+    "category": "org-glyph",
+    "text": "アサギリ物流㈱の配送状況を照会しました。",
+    "entities": [
+      {
+        "surface": "アサギリ物流㈱",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "㈱合字 後置"
+  },
+  {
+    "id": "org_glyph_03",
+    "category": "org-glyph",
+    "text": "㈲コトブキ商会に見積を依頼しました。",
+    "entities": [
+      {
+        "surface": "㈲コトブキ商会",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "㈲合字"
+  },
+  {
+    "id": "org_glyph_04",
+    "category": "org-glyph",
+    "text": "先方は㈱スミレデザインの佐藤課長です。",
+    "entities": [
+      {
+        "surface": "㈱スミレデザイン",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "佐藤",
+        "type": "PERSON"
+      }
+    ],
+    "note": "㈱合字＋役職人名"
+  },
+  {
+    "id": "org_fw_01",
+    "category": "org-fullwidth",
+    "text": "株式会社ＡＢＣ商事の担当にご連絡ください。",
+    "entities": [
+      {
+        "surface": "株式会社ＡＢＣ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角英字"
+  },
+  {
+    "id": "org_fw_02",
+    "category": "org-fullwidth",
+    "text": "ＸＹＺ工業株式会社の見積を精査しました。",
+    "entities": [
+      {
+        "surface": "ＸＹＺ工業株式会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角英字"
+  },
+  {
+    "id": "org_fw_03",
+    "category": "org-fullwidth",
+    "text": "(株)ＫＭＴソリューションズと面談予定です。",
+    "entities": [
+      {
+        "surface": "(株)ＫＭＴソリューションズ",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角英字＋略記"
+  },
+  {
+    "id": "core_01",
+    "category": "org-core",
+    "text": "アオヤマ商事の追加発注について相談したいです。",
+    "entities": [
+      {
+        "surface": "アオヤマ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "法人格なしコア名"
+  },
+  {
+    "id": "core_02",
+    "category": "org-core",
+    "text": "ミドリ設計とサクラソフトウェアの両社に見積依頼します。",
+    "entities": [
+      {
+        "surface": "ミドリ設計",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "サクラソフトウェア",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "コア名複数"
+  },
+  {
+    "id": "core_03",
+    "category": "org-core",
+    "text": "キリシマ電機の納品は完了しています。",
+    "entities": [
+      {
+        "surface": "キリシマ電機",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "コア名"
+  },
+  {
+    "id": "core_04",
+    "category": "org-core",
+    "text": "ツバサ工業への支払いは月末締めです。",
+    "entities": [
+      {
+        "surface": "ツバサ工業",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "コア名"
+  },
+  {
+    "id": "core_05",
+    "category": "org-core",
+    "text": "ヤマブキ総研から届いたレポートを共有します。",
+    "entities": [
+      {
+        "surface": "ヤマブキ総研",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "コア名"
+  },
+  {
+    "id": "person_kanji_01",
+    "category": "person-kanji",
+    "text": "山田様より本日中に折り返しの依頼がありました。",
+    "entities": [
+      {
+        "surface": "山田",
+        "type": "PERSON"
+      }
+    ],
+    "note": "様"
+  },
+  {
+    "id": "person_kanji_02",
+    "category": "person-kanji",
+    "text": "田中さんに資料を送付しました。",
+    "entities": [
+      {
+        "surface": "田中",
+        "type": "PERSON"
+      }
+    ],
+    "note": "さん"
+  },
+  {
+    "id": "person_kanji_03",
+    "category": "person-kanji",
+    "text": "本件は佐藤部長の承認が必要です。",
+    "entities": [
+      {
+        "surface": "佐藤",
+        "type": "PERSON"
+      }
+    ],
+    "note": "役職 部長"
+  },
+  {
+    "id": "person_kanji_04",
+    "category": "person-kanji",
+    "text": "鈴木課長と高橋主任が同席します。",
+    "entities": [
+      {
+        "surface": "鈴木",
+        "type": "PERSON"
+      },
+      {
+        "surface": "高橋",
+        "type": "PERSON"
+      }
+    ],
+    "note": "役職 複数"
+  },
+  {
+    "id": "person_kanji_05",
+    "category": "person-kanji",
+    "text": "渡辺社長宛に招待状をお送りください。",
+    "entities": [
+      {
+        "surface": "渡辺",
+        "type": "PERSON"
+      }
+    ],
+    "note": "役職 社長"
+  },
+  {
+    "id": "person_kanji_06",
+    "category": "person-kanji",
+    "text": "担当の小林様、伊藤様にも共有済みです。",
+    "entities": [
+      {
+        "surface": "小林",
+        "type": "PERSON"
+      },
+      {
+        "surface": "伊藤",
+        "type": "PERSON"
+      }
+    ],
+    "note": "様 複数"
+  },
+  {
+    "id": "person_kanji_07",
+    "category": "person-kanji",
+    "text": "本件は佐々木様が担当します。",
+    "entities": [
+      {
+        "surface": "佐々木",
+        "type": "PERSON"
+      }
+    ],
+    "note": "繰返し記号々を含む姓（木のみ化の回帰）"
+  },
+  {
+    "id": "person_kana_01",
+    "category": "person-kana",
+    "text": "アンナ様からご質問をいただきました。",
+    "entities": [
+      {
+        "surface": "アンナ",
+        "type": "PERSON"
+      }
+    ],
+    "note": "カタカナ 様"
+  },
+  {
+    "id": "person_kana_02",
+    "category": "person-kana",
+    "text": "本日の通訳はマイケルさんにお願いします。",
+    "entities": [
+      {
+        "surface": "マイケル",
+        "type": "PERSON"
+      }
+    ],
+    "note": "カタカナ さん"
+  },
+  {
+    "id": "person_kana_03",
+    "category": "person-kana",
+    "text": "リサ主任とケビン氏が来社されます。",
+    "entities": [
+      {
+        "surface": "リサ",
+        "type": "PERSON"
+      },
+      {
+        "surface": "ケビン",
+        "type": "PERSON"
+      }
+    ],
+    "note": "カタカナ 複数"
+  },
+  {
+    "id": "person_kana_04",
+    "category": "person-kana",
+    "text": "ソフィア先生の講演を予定しています。",
+    "entities": [
+      {
+        "surface": "ソフィア",
+        "type": "PERSON"
+      }
+    ],
+    "note": "カタカナ 先生"
+  },
+  {
+    "id": "sig_01",
+    "category": "signature",
+    "text": "――――――\n株式会社アオヤマ商事\n営業部 山田太郎\nTEL: 03-1234-5678\nEmail: yamada@aoyama-example.co.jp\n――――――",
+    "entities": [
+      {
+        "surface": "株式会社アオヤマ商事",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "山田太郎",
+        "type": "PERSON"
+      },
+      {
+        "surface": "03-1234-5678",
+        "type": "PHONE"
+      },
+      {
+        "surface": "yamada@aoyama-example.co.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "sig_02",
+    "category": "signature",
+    "text": "ツバサ工業株式会社 開発部\n担当: 田中花子\n携帯 090-8765-4321\ntanaka.h@tsubasa-example.jp",
+    "entities": [
+      {
+        "surface": "ツバサ工業株式会社",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "田中花子",
+        "type": "PERSON"
+      },
+      {
+        "surface": "090-8765-4321",
+        "type": "PHONE"
+      },
+      {
+        "surface": "tanaka.h@tsubasa-example.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "sig_03",
+    "category": "signature",
+    "text": "㈱スミレデザイン\n佐藤健\nダイヤルイン 0120-000-111\nsato_k@sumire.example.com",
+    "entities": [
+      {
+        "surface": "㈱スミレデザイン",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "佐藤健",
+        "type": "PERSON"
+      },
+      {
+        "surface": "0120-000-111",
+        "type": "PHONE"
+      },
+      {
+        "surface": "sato_k@sumire.example.com",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "sig_04",
+    "category": "signature",
+    "text": "ミドリ設計 設計課 鈴木一郎\nIP: 050-1111-2222 / suzuki@midori.example.net",
+    "entities": [
+      {
+        "surface": "ミドリ設計",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "鈴木一郎",
+        "type": "PERSON"
+      },
+      {
+        "surface": "050-1111-2222",
+        "type": "PHONE"
+      },
+      {
+        "surface": "suzuki@midori.example.net",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "phone_fw_01",
+    "category": "phone-fullwidth",
+    "text": "お問い合わせは０３－１２３４－５６７８までお願いします。",
+    "entities": [
+      {
+        "surface": "０３－１２３４－５６７８",
+        "type": "PHONE"
+      }
+    ],
+    "note": "全角電話"
+  },
+  {
+    "id": "phone_fw_02",
+    "category": "phone-hyphen",
+    "text": "携帯番号は090ー1111ー2222です。",
+    "entities": [
+      {
+        "surface": "090ー1111ー2222",
+        "type": "PHONE"
+      }
+    ],
+    "note": "長音ハイフン"
+  },
+  {
+    "id": "phone_fw_03",
+    "category": "phone-hyphen",
+    "text": "代表電話 03‐9999‐0000 におかけください。",
+    "entities": [
+      {
+        "surface": "03‐9999‐0000",
+        "type": "PHONE"
+      }
+    ],
+    "note": "全角風ハイフン"
+  },
+  {
+    "id": "phone_fw_04",
+    "category": "phone-plain",
+    "text": "FAXは0664001234へ送信してください。",
+    "entities": [
+      {
+        "surface": "0664001234",
+        "type": "PHONE"
+      }
+    ],
+    "note": "ハイフンなし"
+  },
+  {
+    "id": "email_fw_01",
+    "category": "email-fullwidth",
+    "text": "送付先はｉｎｆｏ＠ｅｘａｍｐｌｅ．ｃｏｍです。",
+    "entities": [
+      {
+        "surface": "ｉｎｆｏ＠ｅｘａｍｐｌｅ．ｃｏｍ",
+        "type": "EMAIL"
+      }
+    ],
+    "note": "全角メール"
+  },
+  {
+    "id": "email_fw_02",
+    "category": "email-fullwidth",
+    "text": "受付：ｓａｌｅｓ＠ｔｅｓｔ．ｃｏ．ｊｐ 宛にご返信ください。",
+    "entities": [
+      {
+        "surface": "ｓａｌｅｓ＠ｔｅｓｔ．ｃｏ．ｊｐ",
+        "type": "EMAIL"
+      }
+    ],
+    "note": "全角メール"
+  },
+  {
+    "id": "email_fw_03",
+    "category": "email-mixed",
+    "text": "連絡先は support＠example.jp です。",
+    "entities": [
+      {
+        "surface": "support＠example.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": "@のみ全角"
+  },
+  {
+    "id": "email_01",
+    "category": "email",
+    "text": "詳細は contact@example.org までご連絡ください。",
+    "entities": [
+      {
+        "surface": "contact@example.org",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "email_02",
+    "category": "email",
+    "text": "請求書は billing.dept+inv@sub.example.co.jp に送ります。",
+    "entities": [
+      {
+        "surface": "billing.dept+inv@sub.example.co.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": "プラス記号入り"
+  },
+  {
+    "id": "phone_01",
+    "category": "phone",
+    "text": "固定電話は 06-6400-1234 です。",
+    "entities": [
+      {
+        "surface": "06-6400-1234",
+        "type": "PHONE"
+      }
+    ],
+    "note": "固定"
+  },
+  {
+    "id": "phone_02",
+    "category": "phone",
+    "text": "フリーダイヤル 0120-123-456 で受付中です。",
+    "entities": [
+      {
+        "surface": "0120-123-456",
+        "type": "PHONE"
+      }
+    ],
+    "note": "フリーダイヤル"
+  },
+  {
+    "id": "phone_03",
+    "category": "phone",
+    "text": "緊急連絡先: 080-1234-5678",
+    "entities": [
+      {
+        "surface": "080-1234-5678",
+        "type": "PHONE"
+      }
+    ],
+    "note": "携帯"
+  },
+  {
+    "id": "phone_04",
+    "category": "phone",
+    "text": "小笠原支所は04992-2-1234までお願いします。",
+    "entities": [
+      {
+        "surface": "04992-2-1234",
+        "type": "PHONE"
+      }
+    ],
+    "note": "5桁市外局番(小笠原)"
+  },
+  {
+    "id": "phone_05",
+    "category": "phone",
+    "text": "白川郷の窓口は05769-6-1234です。",
+    "entities": [
+      {
+        "surface": "05769-6-1234",
+        "type": "PHONE"
+      }
+    ],
+    "note": "5桁市外局番(白川村)"
+  },
+  {
+    "id": "mynum_valid_01",
+    "category": "mynumber-valid",
+    "text": "個人番号は123456789018です。",
+    "entities": [
+      {
+        "surface": "123456789018",
+        "type": "MYNUMBER"
+      }
+    ],
+    "note": "有効"
+  },
+  {
+    "id": "mynum_valid_02",
+    "category": "mynumber-valid",
+    "text": "マイナンバー 987654321093 を記載します。",
+    "entities": [
+      {
+        "surface": "987654321093",
+        "type": "MYNUMBER"
+      }
+    ],
+    "note": "有効"
+  },
+  {
+    "id": "mynum_valid_03",
+    "category": "mynumber-valid",
+    "text": "番号：234567890121（本人確認済み）",
+    "entities": [
+      {
+        "surface": "234567890121",
+        "type": "MYNUMBER"
+      }
+    ],
+    "note": "有効"
+  },
+  {
+    "id": "mynum_invalid_01",
+    "category": "mynumber-invalid",
+    "text": "入力された123456789019は桁誤りの可能性があります。",
+    "entities": [],
+    "note": "無効CD=検出対象外"
+  },
+  {
+    "id": "mynum_invalid_02",
+    "category": "mynumber-invalid",
+    "text": "注文番号は123456789012ですのでご確認ください。",
+    "entities": [],
+    "note": "12桁だがCD不正=検出対象外"
+  },
+  {
+    "id": "trap_phone_01",
+    "category": "trap-phone",
+    "text": "提出締切は07-07-2026です。厳守してください。",
+    "entities": [],
+    "note": "MM-DD-YYYY 日付"
+  },
+  {
+    "id": "trap_phone_02",
+    "category": "trap-phone",
+    "text": "イベントは03-15-2026に開催予定です。",
+    "entities": [],
+    "note": "03始まりでも4-4でなければ電話でない"
+  },
+  {
+    "id": "trap_person_01",
+    "category": "trap-person",
+    "text": "皆さん、本日の会議にご参加ありがとうございました。",
+    "entities": [],
+    "note": "皆さん"
+  },
+  {
+    "id": "trap_person_02",
+    "category": "trap-person",
+    "text": "お客様各位、平素より格別のご高配を賜り厚く御礼申し上げます。",
+    "entities": [],
+    "note": "お客様"
+  },
+  {
+    "id": "trap_person_03",
+    "category": "trap-person",
+    "text": "奥様によろしくお伝えください。",
+    "entities": [],
+    "note": "奥様"
+  },
+  {
+    "id": "trap_org_01",
+    "category": "trap-org",
+    "text": "株式会社とは、株式を発行して資金を調達する会社形態のことです。",
+    "entities": [],
+    "note": "制度説明"
+  },
+  {
+    "id": "trap_org_02",
+    "category": "trap-org",
+    "text": "有限会社は現在新設できない会社形態です。",
+    "entities": [],
+    "note": "制度説明"
+  },
+  {
+    "id": "trap_loc_01",
+    "category": "trap-loc",
+    "text": "来週は東京から大阪へ出張します。",
+    "entities": [],
+    "note": "地名は初版で非対象"
+  },
+  {
+    "id": "trap_loc_02",
+    "category": "trap-loc",
+    "text": "北海道の気候について調べています。",
+    "entities": [],
+    "note": "地名は初版で非対象"
+  },
+  {
+    "id": "trap_loc_03",
+    "category": "trap-loc",
+    "text": "東京都市部の再開発が進んでいます。",
+    "entities": [],
+    "note": "都市部=複合語（住所層でも誤検出しない）"
+  },
+  {
+    "id": "trap_loc_04",
+    "category": "trap-loc",
+    "text": "京都府市場調査の報告書を提出。",
+    "entities": [],
+    "note": "市場=複合語（住所層でも誤検出しない）"
+  },
+  {
+    "id": "mixed_01",
+    "category": "mixed",
+    "text": "株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積の件でご連絡をいただきました。",
+    "entities": [
+      {
+        "surface": "株式会社アオヤマ商事",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "山田",
+        "type": "PERSON"
+      },
+      {
+        "surface": "(株)キリシマ電機",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "mixed_02",
+    "category": "mixed",
+    "text": "田中様、㈱スミレデザインの佐藤課長と03-1234-5678で調整済みです。yamada@aoyama-example.co.jpにも共有しました。",
+    "entities": [
+      {
+        "surface": "田中",
+        "type": "PERSON"
+      },
+      {
+        "surface": "㈱スミレデザイン",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "佐藤",
+        "type": "PERSON"
+      },
+      {
+        "surface": "03-1234-5678",
+        "type": "PHONE"
+      },
+      {
+        "surface": "yamada@aoyama-example.co.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "mixed_03",
+    "category": "mixed",
+    "text": "アオヤマ商事とアオヤマ商事の子会社は別法人です。アオヤマ商事宛に請求します。",
+    "entities": [
+      {
+        "surface": "アオヤマ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "同一表記の複数出現"
+  },
+  {
+    "id": "mixed_04",
+    "category": "mixed",
+    "text": "ミドリ設計の鈴木一郎様（携帯 090-8765-4321）が窓口です。",
+    "entities": [
+      {
+        "surface": "ミドリ設計",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "鈴木一郎",
+        "type": "PERSON"
+      },
+      {
+        "surface": "090-8765-4321",
+        "type": "PHONE"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "mixed_05",
+    "category": "mixed",
+    "text": "本日、ツバサ工業株式会社の高橋主任、ナナホシ食品株式会社の伊藤様と会食しました。",
+    "entities": [
+      {
+        "surface": "ツバサ工業株式会社",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "高橋",
+        "type": "PERSON"
+      },
+      {
+        "surface": "ナナホシ食品株式会社",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "伊藤",
+        "type": "PERSON"
+      }
+    ],
+    "note": ""
+  },
+  {
+    "id": "edge_empty",
+    "category": "edge",
+    "text": "",
+    "entities": [],
+    "note": "空文字"
+  },
+  {
+    "id": "edge_symbols",
+    "category": "edge",
+    "text": "！＃＄％＆（）＊＋ーー――…",
+    "entities": [],
+    "note": "記号のみ"
+  },
+  {
+    "id": "edge_multilang",
+    "category": "edge",
+    "text": "Please contact 山田様 at yamada@aoyama-example.co.jp regarding 株式会社アオヤマ商事.",
+    "entities": [
+      {
+        "surface": "山田",
+        "type": "PERSON"
+      },
+      {
+        "surface": "yamada@aoyama-example.co.jp",
+        "type": "EMAIL"
+      },
+      {
+        "surface": "株式会社アオヤマ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "多言語混在"
+  },
+  {
+    "id": "dict_var_01",
+    "category": "dict-variant",
+    "text": "スカイ−テックへの発注書を確認しました。",
+    "entities": [
+      {
+        "surface": "スカイ−テック",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "U+2212 マイナス"
+  },
+  {
+    "id": "dict_var_02",
+    "category": "dict-variant",
+    "text": "スカイ‐テック株式会社と契約を締結しました。",
+    "entities": [
+      {
+        "surface": "スカイ‐テック株式会社",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "U+2010 ハイフン＋法人格"
+  },
+  {
+    "id": "dict_var_03",
+    "category": "dict-variant",
+    "text": "アオヤマ　商事の追加発注についてご相談です。",
+    "entities": [
+      {
+        "surface": "アオヤマ　商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "全角空白挿入"
+  },
+  {
+    "id": "person_dept_01",
+    "category": "person-dept",
+    "text": "営業部田中様より至急のご連絡がありました。",
+    "entities": [
+      {
+        "surface": "田中",
+        "type": "PERSON"
+      }
+    ],
+    "note": "部署食い込み是正"
+  },
+  {
+    "id": "person_dept_02",
+    "category": "person-dept",
+    "text": "経理部高橋主任が本件を担当します。",
+    "entities": [
+      {
+        "surface": "高橋",
+        "type": "PERSON"
+      }
+    ],
+    "note": "部署食い込み是正"
+  },
+  {
+    "id": "trap_role_01",
+    "category": "trap-role",
+    "text": "ご担当者様、お世話になっております。",
+    "entities": [],
+    "note": "担当者は人名でない"
+  },
+  {
+    "id": "trap_role_02",
+    "category": "trap-role",
+    "text": "関係者各位、下記の通りご連絡いたします。",
+    "entities": [],
+    "note": "関係者/各位"
+  },
+  {
+    "id": "compound_trap_01",
+    "category": "compound-trap",
+    "text": "青葉様より、青葉区役所への申請書を確認しました。",
+    "entities": [
+      {
+        "surface": "青葉",
+        "type": "PERSON",
+        "nth": 0
+      }
+    ],
+    "note": "青葉区役所へ伝播しない"
+  },
+  {
+    "id": "compound_trap_02",
+    "category": "compound-trap",
+    "text": "大和様の発表資料です。大和魂という表現は避けてください。",
+    "entities": [
+      {
+        "surface": "大和",
+        "type": "PERSON",
+        "nth": 0
+      }
+    ],
+    "note": "大和魂へ伝播しない"
+  },
+  {
+    "id": "unknown_org_01",
+    "category": "unknown-entity",
+    "text": "先日、オリオン企画と新規の取引基本契約を締結しました。",
+    "entities": [
+      {
+        "surface": "オリオン企画",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "未知組織・法人格なし・辞書外"
+  },
+  {
+    "id": "unknown_org_02",
+    "category": "unknown-entity",
+    "text": "今回の見積の窓口はネビュラ物流になる見込みです。",
+    "entities": [
+      {
+        "surface": "ネビュラ物流",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "未知組織・法人格なし・辞書外"
+  },
+  {
+    "id": "prop_fullwidth_01",
+    "category": "propagation-variant",
+    "text": "ACME株式会社と契約。追ってＡＣＭＥから請求書が届く。",
+    "entities": [
+      {
+        "surface": "ACME株式会社",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "ＡＣＭＥ",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "NFKC影で全角ＡＣＭＥへ伝播"
+  },
+  {
+    "id": "address_01",
+    "category": "address",
+    "text": "郵便物は〒150-0001 東京都渋谷区神宮前一丁目2番3号までお願いします。",
+    "entities": [
+      {
+        "surface": "〒150-0001",
+        "type": "ADDRESS"
+      },
+      {
+        "surface": "東京都渋谷区神宮前一丁目2番3号",
+        "type": "ADDRESS"
+      }
+    ],
+    "note": "郵便番号＋住所"
+  },
+  {
+    "id": "address_02",
+    "category": "address",
+    "text": "本社は大阪府大阪市北区梅田3-1-1にあります。",
+    "entities": [
+      {
+        "surface": "大阪府大阪市北区梅田3-1-1",
+        "type": "ADDRESS"
+      }
+    ],
+    "note": "都道府県起点住所"
+  },
+  {
+    "id": "address_03",
+    "category": "address",
+    "text": "移転先は〒530−0001 大阪府大阪市北区梅田3−1−1です。",
+    "entities": [
+      {
+        "surface": "〒530−0001",
+        "type": "ADDRESS"
+      },
+      {
+        "surface": "大阪府大阪市北区梅田3−1−1",
+        "type": "ADDRESS"
+      }
+    ],
+    "note": "U+2212 マイナス区切りの郵便番号＋番地"
+  },
+  {
+    "id": "core_prop_01",
+    "category": "core-propagation",
+    "text": "本日、株式会社ハヤブサ企画の件で打合せしました。ハヤブサ企画の担当者は不在でした。",
+    "entities": [
+      {
+        "surface": "株式会社ハヤブサ企画",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "ハヤブサ企画",
+        "type": "ORGANIZATION",
+        "nth": 1
+      }
+    ],
+    "note": "前置法人格→コア名再言及（辞書外）"
+  },
+  {
+    "id": "core_prop_02",
+    "category": "core-propagation",
+    "text": "ミナヅキ工業株式会社と基本契約を締結。以後の窓口はミナヅキ工業になります。",
+    "entities": [
+      {
+        "surface": "ミナヅキ工業株式会社",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "ミナヅキ工業",
+        "type": "ORGANIZATION",
+        "nth": 1
+      }
+    ],
+    "note": "後置法人格→コア名再言及（辞書外）"
+  },
+  {
+    "id": "core_prop_trap_01",
+    "category": "core-propagation",
+    "text": "株式会社ハクバ商事にご連絡ください。会場はハクバ商事ビルの3階です。",
+    "entities": [
+      {
+        "surface": "株式会社ハクバ商事",
+        "type": "ORGANIZATION"
+      }
+    ],
+    "note": "コア名は複合語（◯◯ビル）内部へ伝播しない"
+  },
+  {
+    "id": "edge_long",
+    "category": "edge",
+    "text": "これは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\nこれは長文の業務メールを想定したテストケースです。\n株式会社アオヤマ商事の山田様より、(株)キリシマ電機の見積についてご連絡をいただきました。担当の佐藤課長と03-1234-5678で調整し、yamada@aoyama-example.co.jpに返信しました。\n",
+    "entities": [
+      {
+        "surface": "株式会社アオヤマ商事",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "山田",
+        "type": "PERSON"
+      },
+      {
+        "surface": "(株)キリシマ電機",
+        "type": "ORGANIZATION"
+      },
+      {
+        "surface": "佐藤",
+        "type": "PERSON"
+      },
+      {
+        "surface": "03-1234-5678",
+        "type": "PHONE"
+      },
+      {
+        "surface": "yamada@aoyama-example.co.jp",
+        "type": "EMAIL"
+      }
+    ],
+    "note": "数千文字長文"
+  }
+]

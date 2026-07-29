@@ -1,0 +1,38 @@
+# namemask 設定（Planv2）。P0/P1 では未使用の項目も、後続フェーズの
+# 設定口として先に定義しておく。閾値は recall 優先で低めが既定（§5.5 / ADR-004）。
+
+# --- NER層（P4）---
+ner:
+  engine: ja_ginza           # 現状の導入モデル（CPU向け）。torch 導入後は ja_ginza_electra へ
+  score_threshold: 0.5       # GiNZA は確信度を出さないため固定スコア（§5.5・将来の可変口）
+  second_engine: null        # eval で recall 不足時のみ union 追加（§4）
+
+# --- 正規表現層（P3。追加パターンの口）---
+regex:
+  extra_patterns: []         # [{name: CASE_CODE, type: ORGANIZATION, pattern: '...'}]
+
+# --- 構造ルール層（P3）---
+structural:
+  person_max_len: 4          # 敬称アンカーの直前候補長（§5.3）
+  person_stopwords: [皆, みな, お客, 客, 奥, 各位]
+  org_name_max_len: 24       # 法人格マッチの貪欲抑制
+
+# --- 辞書層（P3）---
+denylist:
+  clients_csv: data/clients.csv
+  persons_csv: null          # 任意（§5.4）
+  min_core_len: 3            # コア名2文字以下は法人格付きのみ照合（§5.4 安全弁）
+
+# --- LLM検証パス（P6・任意）---
+llm:
+  enabled: false
+  endpoint: http://localhost:11434   # ループバック限定（§9）。非ループバックは既定で拒否
+  allow_remote: false        # true にしない限り生テキストは外部へ出さない（安全弁）
+  model: qwen2.5-coder:7b
+  chunk_chars: 700           # 500〜800（§7）
+  timeout_sec: 30
+
+# --- mapping / セキュリティ（§6.3 / §9）---
+session:
+  persist: false             # 既定はメモリ内のみ
+  dir: .session

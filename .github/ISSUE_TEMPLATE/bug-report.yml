@@ -1,0 +1,62 @@
+name: 🐛 Bug report / バグ報告
+description: 検出漏れ以外の不具合（クラッシュ・復元失敗・CLI の挙動など）
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **実在の機密テキストを貼らないでください。** 架空名で再現してください。
+
+        検出漏れ（マスクされなかった）は **Detection miss** テンプレートを使ってください。
+        セキュリティ上の問題は公開 issue にせず
+        [advisory](https://github.com/sou-kurakata/namemask/security/advisories/new) で報告してください。
+  - type: checkboxes
+    id: fictional
+    attributes:
+      label: 確認
+      options:
+        - label: 貼り付ける内容に実在の個人・企業の情報は含まれていない
+          required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: 何が起きたか / What happened
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 再現手順 / Steps to reproduce
+      render: shell
+      placeholder: |
+        1. echo '株式会社サンプル商事' > in.txt
+        2. namemask mask in.txt
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待した挙動 / Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: エラー出力 / Error output
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: namemask のバージョン
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 実行環境 / Environment
+      placeholder: "Python 3.12 / macOS 15 / installed via pip"
+    validations:
+      required: true

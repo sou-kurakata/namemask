@@ -1,0 +1,89 @@
+[project]
+name = "namemask"
+version = "0.1.0"
+description = "Mask Japanese PII locally before sending text to an external AI, then restore it."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "sou-kurakata" }]
+keywords = [
+    "pii", "masking", "anonymization", "pseudonymization",
+    "japanese", "nlp", "privacy", "llm", "redaction",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Natural Language :: Japanese",
+    "Topic :: Security",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pyyaml>=6.0",
+    "pyahocorasick>=2.0",
+]
+
+[project.urls]
+Homepage      = "https://github.com/sou-kurakata/namemask"
+Repository    = "https://github.com/sou-kurakata/namemask"
+Documentation = "https://github.com/sou-kurakata/namemask/tree/main/docs"
+Changelog     = "https://github.com/sou-kurakata/namemask/blob/main/CHANGELOG.md"
+Issues        = "https://github.com/sou-kurakata/namemask/issues"
+
+[project.scripts]
+namemask = "namemask.cli:main"
+
+[project.optional-dependencies]
+# optional な検出層（既定 off・追加専用・fail-safe）
+ner    = ["ginza>=5.2", "ja_ginza>=5.2"]
+llm    = []                    # Ollama は外部プロセス。Python 依存は不要
+crypto = ["cryptography>=42"]  # mapping の AES 暗号化（--encrypt）
+# 注: `web` / `desktop` extra は v0.1.0 では提供しない（ADR-0011）。
+#     ローカルレビューUIとデスクトップアプリは別リポジトリ namemask-app にある。
+dev = [
+    "pytest>=8.0",
+    "hypothesis>=6.0",
+    "ruff>=0.6",
+    "build>=1.2",
+    "twine>=5.0",
+]
+all = ["namemask[ner,crypto]"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+namemask = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "ner: GiNZA / ja_ginza を必要とする（CI では skip）",
+    "llm: 実 Ollama を必要とする（CI では skip）",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+ignore = ["E501", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011"]

@@ -1,0 +1,53 @@
+# ==== 機密（絶対にコミットしない）====
+# mapping は生の機密。
+.session/
+*.mapping.json
+# 取引先・担当者マスタは機密。雛形（clients.sample.csv）のみ追跡する。
+data/clients.csv
+data/persons.csv
+# ローカル設定（マシン固有のパスや辞書位置が入る）
+config.local.yaml
+.env
+.env.*
+
+# ==== CI 生成物（手動でコミットしない。Phase 4）====
+benchmarks/*.log
+docs/accuracy.generated.md
+
+# ==== Python ====
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ==== Node / frontend ====
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+npm-debug.log*
+
+# ==== PyInstaller ====
+*.spec.bak
+
+# ==== エディタ / OS ====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ==== その他 ====
+*.zip
+.claude/settings.local.json
+PLAN.md

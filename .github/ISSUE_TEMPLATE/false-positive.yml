@@ -1,0 +1,41 @@
+name: 🎯 False positive / 過剰マスク
+description: マスクすべきでないものがマスクされた
+title: "[fp] "
+labels: ["false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        過剰マスクは設計上「軽微な不具合」として扱います（recall 優先・不変条件2）。
+        修正する場合も recall を下げない方法を探すため、対応に時間がかかることがあります。
+
+        ⚠️ 架空名で再現してください。
+  - type: checkboxes
+    id: fictional
+    attributes:
+      label: 確認
+      options:
+        - label: 以下の入力に実在の個人・企業の情報は含まれていない
+          required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: 入力（架空名のみ）
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: マスクされてしまった箇所と、その理由の推測
+      description: "`namemask mask` は stderr に検出根拠（どの層が検出したか）を出します。それも貼ってください。"
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: namemask のバージョン
+      placeholder: "0.1.0"
+    validations:
+      required: true

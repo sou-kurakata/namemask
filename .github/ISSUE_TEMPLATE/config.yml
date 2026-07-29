@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 セキュリティ上の問題 / Security vulnerability
+    url: https://github.com/sou-kurakata/namemask/security/advisories/new
+    about: 公開 issue にしないでください。非公開の advisory で報告してください。
+  - name: 💬 質問・相談 / Questions and ideas
+    url: https://github.com/sou-kurakata/namemask/discussions
+    about: 使い方の質問や提案は Discussions へ。

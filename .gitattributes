@@ -1,0 +1,20 @@
+# 改行コードを LF に正規化する。
+# 開発は macOS、CI は Linux/Windows/macOS、貢献者の環境は不定。
+# これが無いと Windows の貢献者が CRLF を混ぜ、golden corpus の
+# オフセット（原文座標）がずれてテストが不安定になる。
+* text=auto eol=lf
+
+# バイナリ（正規化しない）
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.whl  binary
+*.zip  binary
+
+# golden corpus は座標が意味を持つ。改行の揺れを絶対に入れない。
+tests/golden/*.json text eol=lf
+tests/golden/*.csv  text eol=lf
+
+# 言語統計から除外（GitHub の言語バーを検出器コードで代表させる）
+docs/**   linguist-documentation
+*.md      linguist-documentation
