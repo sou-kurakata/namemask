@@ -7,13 +7,8 @@
 Context / Options considered / Decision / Consequences の4節。
 **採用しなかった選択肢とその理由を必ず残す。**
 
-> **TODO(P2-3): 旧 `Planv2.md` §13（ADR-001〜007）と `Planv3.md` §12 の ADR-106 / ADR-107 を
-> 以下の連番で 1ファイル1決定に分割する。** 番号対応表は
-> [`../../MIGRATION.md`](../../MIGRATION.md) §4。
-> 分割が終わったら各行の `_(未移行)_` を消してリンクを張り、この引用ブロックを削除する。
->
-> **UI / server / desktop の ADR（旧 ADR-101〜105, 108〜121）はこのリポジトリに移さない。**
-> それらは別プロジェクト `namemask-app` の担当。
+`Legacy ID` は旧プロトタイプのプラン文書での番号。コード中のコメントや docstring に
+残っている `ADR-001` `ADR-106` 等の参照はこの列で引く。
 
 ---
 
@@ -21,20 +16,20 @@ Context / Options considered / Decision / Consequences の4節。
 
 | # | Title | Legacy |
 |---|---|---|
-| 0001 | 汎用PIIフレームワーク（Presidio等）を使わず薄い自前パイプラインにする _(未移行)_ | ADR-001 |
-| 0002 | 評価基盤とコアエンジンを検出器より先に作る _(未移行)_ | ADR-002 |
-| 0003 | NER より先に決定的層で recall の床を作る _(未移行)_ | ADR-003 |
-| 0004 | スコア閾値を低くし precision を意図的に犠牲にする _(未移行)_ | ADR-004 |
-| 0005 | LLM をオーケストレーターにしない（追加専用の検証者に限定） _(未移行)_ | ADR-005 |
-| 0006 | flashtext ではなく pyahocorasick を使う _(未移行)_ | ADR-006 |
-| 0007 | 辞書照合は fold 済み第2影テキスト上で行う _(未移行)_ | ADR-007 |
+| [0001](./0001-thin-in-house-pipeline-over-generic-pii-framework.md) | 汎用PIIフレームワーク（Presidio等）を使わず薄い自前パイプラインにする | ADR-001 |
+| [0002](./0002-build-eval-harness-and-core-before-detectors.md) | 評価基盤とコアエンジンを検出器より先に作る | ADR-002 |
+| [0003](./0003-deterministic-layers-before-ner.md) | NER より先に決定的層で recall の床を作る | ADR-003 |
+| [0004](./0004-favor-recall-over-precision.md) | スコア閾値を低くし precision を意図的に犠牲にする | ADR-004 |
+| [0005](./0005-llm-as-additive-verifier-not-orchestrator.md) | LLM をオーケストレーターにしない（追加専用の検証者に限定） | ADR-005 |
+| [0006](./0006-pyahocorasick-over-flashtext.md) | flashtext ではなく pyahocorasick を使う | ADR-006 |
+| [0007](./0007-dictionary-matching-on-folded-second-shadow.md) | 辞書照合は fold 済み第2影テキスト上で行う | ADR-007 |
 
 ## Paths and configuration
 
 | # | Title | Legacy |
 |---|---|---|
-| 0008 | パス既定値は import 時定数でなく呼び出し時に遅延解決する _(未移行)_ | ADR-106 |
-| 0009 | config 雛形の書き出しは load_config() の副作用にせず明示関数にする _(未移行)_ | ADR-107 |
+| [0008](./0008-resolve-default-paths-lazily.md) | パス既定値は import 時定数でなく呼び出し時に遅延解決する | ADR-106 |
+| [0009](./0009-config-scaffolding-as-explicit-function.md) | config 雛形の書き出しは load_config() の副作用にせず明示関数にする | ADR-107 |
 
 ## Open source release
 
