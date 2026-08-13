@@ -26,7 +26,10 @@ body:
     attributes:
       label: 入力（架空名のみ）/ Input
       render: text
-      placeholder: 弊社の担当は㈲テスト設計の佐々木さんです。
+      placeholder: |
+        株式会社サンプル商事
+        営業部 山田太郎
+        TEL: 03-1234-5678
     validations:
       required: true
   - type: textarea
@@ -35,8 +38,9 @@ body:
       label: 期待する検出 / Expected
       render: text
       placeholder: |
-        ㈲テスト設計 → ORGANIZATION
-        佐々木        → PERSON
+        株式会社サンプル商事 → ORGANIZATION
+        山田太郎             → PERSON（敬称が付かないので現状は取れない）
+        03-1234-5678         → PHONE
     validations:
       required: true
   - type: textarea

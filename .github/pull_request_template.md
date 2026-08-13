@@ -18,11 +18,11 @@
 
 | Metric | Before | After |
 |---|---|---|
-| Overall recall | | |
+| Overall recall (partial) | | |
 | Precision | | |
-| Dictionary recall | | |
-| Regex recall | | |
-| Round-trip | | |
+| PERSON recall | | |
+| ORGANIZATION recall | | |
+| 層別寄与の変化（アブレーション） | | |
 
 <details><summary>eval output (after)</summary>
 
@@ -32,8 +32,11 @@
 
 </details>
 
-- [ ] golden corpus にケースを追加した（**架空名のみ**）
+- [ ] golden corpus にケースを追加した（`_build_corpus.py` を編集して再生成・**架空名のみ**）
 - [ ] ケースを先に追加し、失敗するのを確認してから実装した
+- [ ] `make eval` が書き換えた `docs/accuracy.md` の差分をコミットに含めた
+      （**CI が実測との一致を検査する**）
+- [ ] recall が下がる変更の場合、その理由を上に書いた（**閾値の変更は別 PR**）
 
 ---
 

@@ -32,19 +32,28 @@ from fictional names**:
 
 ```markdown
 ## Input (fictional names only)
-弊社の担当は㈲テスト設計の佐々木さんです。
+株式会社サンプル商事
+営業部 山田太郎
+TEL: 03-1234-5678
 
 ## Expected
-㈲テスト設計 → ORGANIZATION
-佐々木        → PERSON
+株式会社サンプル商事 → ORGANIZATION
+山田太郎             → PERSON
+03-1234-5678         → PHONE
 
 ## Actual
-㈲テスト設計 → detected
-佐々木        → NOT detected
+株式会社サンプル商事 → detected (structural)
+山田太郎             → NOT detected
+03-1234-5678         → detected (regex)
 
 ## Environment
 namemask 0.1.0 / Python 3.12 / no dictionary / --address off
 ```
+
+The report above is a real miss: the person name carries no honorific
+(`様` / `さん` / `部長` …), so the structural layer has nothing to anchor on.
+Note how the surrounding entities *are* detected — that contrast is what makes a
+report actionable.
 
 Use the **Detection miss** issue template — it asks for exactly this.
 
@@ -65,16 +74,18 @@ make eval
 ```
 
 This repository is the **detection engine and CLI only** — see
-[ADR-0011](./docs/adr/). The interactive review UI and the Windows desktop build
+[ADR-0011](./docs/adr/0011-scope-oss-repo-to-core-and-cli.md).
+The interactive review UI and the Windows desktop build
 live in a separate project. PRs adding a web server, a frontend framework, or
 PyInstaller packaging here will be declined; open an issue instead so the scope
 decision can be revisited deliberately.
 
-Optional layers need extra setup and are **skipped in CI**:
+Optional layers need extra setup and are **skipped in CI** (models cannot be
+bundled). Run `make test-all` locally once they are installed:
 
 ```bash
-pip install -e ".[ner]" && python -m spacy download ja_ginza   # NER
-# LLM: run Ollama locally, then `make test-all`
+pip install -e ".[ner]"   # GiNZA + ja_ginza come from PyPI; no `spacy download` needed
+# LLM: run Ollama locally (loopback only), then `make test-all`
 ```
 
 ---
@@ -108,13 +119,20 @@ than a PR that changes behaviour.
 Detection accuracy is the core value of this project, so detector changes have a
 higher bar:
 
-1. **Add the case to the golden corpus first** (`tests/golden/corpus.json`,
-   fictional names). Watch it fail.
+1. **Add the case to the golden corpus first.** Edit `tests/golden/_build_corpus.py`
+   (fictional names) and run it to regenerate `tests/golden/corpus.json` — the
+   generator validates that every `surface` actually occurs in its `text`.
+   Watch the new case fail.
 2. Implement the change.
 3. **Run `make eval` and put the before/after numbers in the PR description.**
-   Recall, precision, and the per-layer ablation.
-4. CI enforces thresholds (precision ≥ 1.00 exact-layer, overall recall ≥ 95%,
-   round-trip 100%). **A PR that lowers these will not merge.**
+   Recall, precision, and the per-layer ablation. `make eval` also regenerates the
+   numbers in [`docs/accuracy.md`](./docs/accuracy.md) — **commit that diff**; CI
+   fails if the committed numbers disagree with the measurement.
+4. CI enforces the thresholds in [`docs/accuracy.md`](./docs/accuracy.md#acceptance-criteria-ci-thresholds)
+   — overall recall ≥ 95%, precision ≥ 70%, dictionary and regex recall 100%,
+   legal-entity organizations ≥ 98%, round-trip 100%.
+   **A PR that lowers these will not merge.** (The measured precision is 1.00, but
+   the gate is 70%: precision is deliberately allowed to drop in exchange for recall.)
 5. Over-masking is acceptable; under-masking is not. When trading off, choose recall.
 
 Adding cases that *lower* recall is welcome — it makes a real gap visible. Say so
@@ -128,7 +146,7 @@ in the PR so the threshold discussion happens deliberately, not accidentally.
 |---|---|---|
 | Core / detectors | pytest | must pass on Ubuntu py3.10–3.12, and Windows / macOS py3.12 |
 | Round-trip properties | hypothesis | property-based, always runs |
-| Evaluation harness | `tests/eval.py` | CI threshold gate |
+| Evaluation harness | `tests/eval.py` | CI gate: `--assert-thresholds` (accuracy) and `--check-docs` (the committed numbers match the measurement) |
 | NER / LLM | pytest markers `ner` / `llm` | skipped in CI, run locally |
 | Install smoke test | CI `smoke` job | `pip install .` then round-trip with no dictionary |
 
