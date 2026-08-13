@@ -35,19 +35,28 @@ def _passphrase() -> str | None:
 
 
 def _configure_std_streams() -> None:
-    """標準入出力の改行変換を無効にする（原文の改行コードを保つ）。
+    """標準入出力を UTF-8・改行変換なしに固定する。
 
-    text モードの既定は環境依存で、CRLF <-> LF を勝手に変換しうる。原文を書き換え
-    ないことが不変条件なので、パイプ経路でも変換させない。pytest 等が差し替えた
-    ストリームには reconfigure が無いため、存在を確認してから呼ぶ。
+    このツールはファイル I/O をすべて UTF-8 で明示している。標準入出力だけ環境の
+    ロケールに従うと、同じ入力が経路によって壊れる。
+
+    - **encoding**: リダイレクトされた標準入出力の encoding はロケール依存で、
+      Windows の既定（cp1252 等）では日本語を表現できない。放置すると
+      `type memo.txt | namemask mask -` や `namemask mask memo.txt > out.txt` が
+      UnicodeDecodeError / UnicodeEncodeError で落ちる。主要利用者が Windows なので
+      決定的に UTF-8 へ固定する（PYTHONIOENCODING より優先する）。
+    - **newline**: text モードの既定は CRLF <-> LF を勝手に変換しうる。原文を
+      書き換えないことが不変条件なので、パイプ経路でも変換させない。
+
+    pytest 等が差し替えたストリームには reconfigure が無いため、存在を確認してから呼ぶ。
     """
-    for stream in (sys.stdin, sys.stdout):
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
         if reconfigure is None:
             continue
         # 既に閉じている・再設定できないストリームでも CLI は止めない。
         with contextlib.suppress(ValueError, OSError):
-            reconfigure(newline="")
+            reconfigure(encoding="utf-8", newline="")
 
 
 def _read_input(path: str | None) -> str:

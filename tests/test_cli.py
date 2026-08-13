@@ -329,6 +329,46 @@ def test_stdin_stdout_pipe_preserves_crlf(tmp_path: Path, clients_csv: str) -> N
     assert b"\n" not in proc.stdout.replace(b"\r\n", b"")
 
 
+def test_pipe_works_under_non_utf8_locale(tmp_path: Path, clients_csv: str) -> None:
+    """ロケール encoding が UTF-8 でなくてもパイプ経路が壊れないこと。
+
+    Windows の既定ロケール（例: cp1252）では、リダイレクトされた標準入出力の
+    encoding がそれになる。日本語は cp1252 で表現できないため、対策が無いと
+    `type memo.txt | namemask mask -` も `namemask mask memo.txt > out.txt` も
+    UnicodeDecodeError / UnicodeEncodeError で落ちる。**主要利用者が Windows**
+    なので、ここは決定的に UTF-8 へ固定する。
+
+    PYTHONIOENCODING で非 UTF-8 ロケールを模擬すれば、どの OS でも再現できる。
+    """
+    import os
+    import subprocess
+    import sys
+
+    env = dict(os.environ, PYTHONIOENCODING="cp1252")
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "namemask",
+            "mask",
+            "-",
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-m",
+            str(tmp_path / "map.json"),
+        ],
+        input=f"{TEXT}\n".encode(),
+        capture_output=True,
+        env=env,
+        check=True,
+    )
+    # マスク済みテキスト（日本語プレースホルダ）が UTF-8 のまま出ること。
+    assert "[[組織_1]]".encode() in proc.stdout
+    # stderr のレポートも同じく落ちない（日本語を含む）。
+    assert "マスク結果".encode() in proc.stderr
+
+
 def test_mask_reads_stdin(tmp_path: Path, clients_csv: str, monkeypatch) -> None:
     monkeypatch.setattr("sys.stdin", io.StringIO(TEXT))
     masked = tmp_path / "m.txt"
