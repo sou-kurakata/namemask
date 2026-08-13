@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 このリポジトリで作業するときの指示書。**セッション開始時に必ず読む。**
-実行計画は [`PLAN.md`](./PLAN.md)、旧リポジトリからの移行手順は [`MIGRATION.md`](./MIGRATION.md)。
+実行計画は [`PLAN.md`](./PLAN.md)。
 
 ---
 
@@ -96,7 +96,6 @@
 namemask/
 ├── CLAUDE.md               この文書
 ├── PLAN.md                 OSS化の実行計画（作業はここから取る）
-├── MIGRATION.md            旧リポジトリからの移行手順（Phase 1 でのみ使う）
 ├── README.md               英語・利用者向け
 ├── README.ja.md            日本語・詳細
 ├── src/namemask/           ★ 主役
