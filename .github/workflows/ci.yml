@@ -95,6 +95,27 @@ jobs:
           fi
           exit $fail
 
+      # 配布物にも機密が入らないこと。git 追跡だけ見ても、ローカルに実ファイルが
+      # ある状態でビルドされた成果物は防げない（PyPI への公開は取り消せない）。
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: python -m pip install build
+      - run: python -m build
+      - name: sdist / wheel に機密が入っていないこと
+        shell: bash
+        run: |
+          set -euo pipefail
+          list=$(tar tzf dist/*.tar.gz; python -m zipfile -l dist/*.whl | awk '{print $1}')
+          if echo "$list" | grep -E 'data/(clients|persons)\.csv|\.mapping\.json|(^|/)\.session/|\.env$'; then
+            echo "::error::配布物に機密ファイルが含まれている"; exit 1
+          fi
+          # wheel はパッケージだけ（tests / data / 設定を同梱しない）。
+          if python -m zipfile -l dist/*.whl | grep -E 'tests/|data/|config\.yaml'; then
+            echo "::error::wheel に配布対象外のファイルが含まれている"; exit 1
+          fi
+          echo "配布物は clean"
+
   # ---- 必須ゲート: 実際に pip install して動くこと ----
   smoke:
     name: install smoke test

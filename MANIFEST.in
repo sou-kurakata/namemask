@@ -1,0 +1,27 @@
+# sdist に何を入れるかを明示する。
+#
+# 既定のままだと setuptools が tests/test_*.py だけを拾い、conftest.py・eval.py・
+# golden コーパスが入らないため「実行できないテスト」を配布することになる。
+# 検証できる配布物にするため、テストは一式入れる（ディストリビューションの
+# パッケージャがそのまま検証できる）。
+
+include LICENSE README.md README.ja.md CHANGELOG.md CONTRIBUTING.md SECURITY.md
+include Makefile config.yaml
+recursive-include tests *.py *.json *.csv
+recursive-include docs *.md
+include data/clients.sample.csv
+
+# ---- 機密は絶対に配布物へ入れない（CLAUDE.md §8 / 不変条件10）----
+# gitignore 済みだが、ローカルに実ファイルがある状態でビルドされても
+# 混入しないよう、パッケージング側でも明示的に除外する。
+exclude data/clients.csv
+exclude data/persons.csv
+recursive-exclude data *.csv
+include data/clients.sample.csv
+prune .session
+prune scratchpad
+global-exclude *.mapping.json
+global-exclude config.local.yaml
+global-exclude .env .env.*
+global-exclude *.py[cod]
+global-exclude .DS_Store
