@@ -68,7 +68,7 @@ jobs:
         # **閾値を割っても緑になる**。このゲートの意味そのものが消えるので必須。
         run: |
           set -o pipefail
-          python tests/eval.py --address --assert-thresholds | tee eval.txt
+          python tests/eval.py --address --assert-thresholds --check-docs | tee eval.txt
       - uses: actions/upload-artifact@v7
         if: always()
         with:

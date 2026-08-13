@@ -10,9 +10,10 @@ config.local.yaml
 .env
 .env.*
 
-# ==== CI 生成物（手動でコミットしない。Phase 4）====
+# ==== CI 生成物 ====
 benchmarks/*.log
-docs/accuracy.generated.md
+# 注: docs/accuracy.md の数値ブロックは `make eval` が生成するが、
+#     追跡対象（CI が --check-docs でコミット済みの数値と実測の一致を検査する）。
 
 # ==== Python ====
 __pycache__/

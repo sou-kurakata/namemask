@@ -8,7 +8,7 @@ help:
 	@echo "install    開発依存を入れる（editable + dev extra）"
 	@echo "test       pytest（NER/LLM 要のテストは skip）"
 	@echo "test-all   pytest 全実行（GiNZA / Ollama をローカルに要求）"
-	@echo "eval       決定的層の実測 + 層別アブレーション"
+	@echo "eval       決定的層の実測 + 層別アブレーション（docs/accuracy.md を更新）"
 	@echo "lint       ruff check + format --check"
 	@echo "fmt        ruff format（書き換える）"
 	@echo "build      sdist + wheel を作る"
@@ -24,7 +24,7 @@ test-all:
 	$(PYTHON) -m pytest
 
 eval:
-	$(PYTHON) tests/eval.py --address
+	$(PYTHON) tests/eval.py --address --write-docs
 
 lint:
 	$(PYTHON) -m ruff check src tests

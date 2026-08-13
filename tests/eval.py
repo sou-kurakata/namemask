@@ -336,10 +336,110 @@ def check_thresholds(
     return checks
 
 
+# --- docs/accuracy.md の数値ブロック生成 -----------------------------------
+#
+# **数値を手で書かない。** 手で更新する数字は必ず古くなる（旧 benchmarks/*.log が
+# そうだった）。docs/accuracy.md の GENERATED ブロックはここが唯一の書き手で、
+# CI は --check-docs で「コミット済みの数値が実測と一致すること」を検査する。
+
+DOCS_PATH = Path(__file__).resolve().parent.parent / "docs" / "accuracy.md"
+_BEGIN = "<!-- BEGIN GENERATED -->"
+_END = "<!-- END GENERATED -->"
+#: このブロックを生成する正準コマンド（README / docs の数値もこの構成の実測値）。
+CANONICAL_EVAL_ARGS = ("--address",)
+
+
+def render_generated_block(report: EvalReport, contribution: dict[str, float]) -> str:
+    """docs/accuracy.md に差し込む数値ブロックを組み立てる（Markdown）。"""
+    lines = [
+        _BEGIN,
+        "",
+        "> この節は `make eval` が生成する。**手で編集しない**"
+        "（編集しても CI の `--check-docs` が差分を検出して落ちる）。",
+        "",
+        f"構成: 決定的層 + 住所層（NER off / LLM off）・`python tests/eval.py "
+        f"{' '.join(CANONICAL_EVAL_ARGS)}`",
+        "",
+        f"- ケース数: **{report.n_cases}** / 正解スパン: **{report.gold_total}** / "
+        f"検出スパン: **{report.pred_total}**",
+        "",
+        "| Metric | Result |",
+        "|---|---|",
+        f"| Recall (partial) | **{report.recall:.4f}** |",
+        f"| Recall (exact) | **{report.exact_recall:.4f}** |",
+        f"| Precision | **{report.precision:.4f}** |",
+        f"| F1 | **{report.f1:.4f}** |",
+        "",
+        "### Per-type recall",
+        "",
+        "| Type | Recall | Hits / Gold |",
+        "|---|---|---|",
+    ]
+    for t in ALL_TYPES:
+        gold = report.per_type_gold.get(t)
+        if not gold:
+            continue
+        hits = report.per_type_hits.get(t, 0)
+        lines.append(f"| {t} | {report.type_recall(t):.4f} | {hits} / {gold} |")
+
+    lines += [
+        "",
+        "### Layer contribution (true ablation)",
+        "",
+        "層を1つ無効にしたパイプラインで再評価し、full との recall 差を寄与とする。",
+        "",
+        "| Layer | Recall drop if removed |",
+        "|---|---|",
+    ]
+    for name, drop in sorted(contribution.items(), key=lambda kv: -kv[1]):
+        lines.append(f"| {name} | −{drop:.4f} |")
+
+    lines += ["", "### False negatives", ""]
+    if report.false_negatives:
+        lines.append(f"残る見逃しは **{len(report.false_negatives)}件**。")
+        lines += ["", "| Case | Type | Surface |", "|---|---|---|"]
+        for cid, surface, typ in report.false_negatives:
+            lines.append(f"| `{cid}` | {typ} | {surface} |")
+    else:
+        lines.append("見逃しゼロ。")
+
+    lines += ["", "### False positives", ""]
+    if report.false_positives:
+        lines.append(f"誤検出は **{len(report.false_positives)}件**。")
+        lines += ["", "| Case | Type | Surface |", "|---|---|---|"]
+        for cid, surface, typ in report.false_positives:
+            lines.append(f"| `{cid}` | {typ} | {surface} |")
+    else:
+        lines.append("誤検出ゼロ（precision 1.00）。")
+
+    lines += ["", _END]
+    return "\n".join(lines)
+
+
+def _splice_generated(doc: str, block: str) -> str:
+    """既存文書の GENERATED ブロックを差し替える。マーカーが無ければ例外。"""
+    start = doc.find(_BEGIN)
+    end = doc.find(_END)
+    if start == -1 or end == -1 or end < start:
+        raise SystemExit(f"{DOCS_PATH} に {_BEGIN} / {_END} が見つかりません。")
+    return doc[:start] + block + doc[end + len(_END) :]
+
+
+def write_generated_docs(block: str, path: Path = DOCS_PATH) -> bool:
+    """数値ブロックを書き込む。変更があれば True。"""
+    doc = path.read_text(encoding="utf-8")
+    updated = _splice_generated(doc, block)
+    if updated == doc:
+        return False
+    path.write_text(updated, encoding="utf-8")
+    return True
+
+
 def _run_cli() -> None:
     """実パイプラインの実測と真のアブレーション（層別 recall 寄与）を表示する。
 
     使い方: python tests/eval.py [--ner] [--address] [--assert-thresholds]
+                                 [--write-docs | --check-docs]
     """
     import argparse
 
@@ -358,6 +458,17 @@ def _run_cli() -> None:
         "--assert-thresholds",
         action="store_true",
         help="受け入れ基準（CLAUDE.md §6）を検査し、下回ったら非ゼロ終了する（CI ゲート）",
+    )
+    docs = ap.add_mutually_exclusive_group()
+    docs.add_argument(
+        "--write-docs",
+        action="store_true",
+        help="docs/accuracy.md の GENERATED ブロックを実測値で書き換える",
+    )
+    docs.add_argument(
+        "--check-docs",
+        action="store_true",
+        help="docs/accuracy.md の GENERATED ブロックが実測と一致するか検査する（CI ゲート）",
     )
     args = ap.parse_args()
 
@@ -388,6 +499,29 @@ def _run_cli() -> None:
     print("\n=== 真のアブレーション: 層を外した時の recall 低下 ===")
     for name, drop in sorted(contrib.items(), key=lambda kv: -kv[1]):
         print(f"  {name:12s} -{drop:.4f}")
+
+    if args.write_docs or args.check_docs:
+        # 生成物は「正準構成」の実測値だけ。別構成の数値を混ぜると出典が割れる。
+        actual = tuple(a for a in ("--address", "--ner") if getattr(args, a[2:]))
+        if actual != CANONICAL_EVAL_ARGS:
+            raise SystemExit(
+                f"docs の生成は {' '.join(CANONICAL_EVAL_ARGS)} 構成でのみ行えます"
+                f"（今回: {' '.join(actual) or 'なし'}）。"
+            )
+        block = render_generated_block(full, contrib)
+        if args.write_docs:
+            changed = write_generated_docs(block)
+            print(f"\ndocs/accuracy.md: {'更新しました' if changed else '変更なし'}")
+        else:
+            current = DOCS_PATH.read_text(encoding="utf-8")
+            if _splice_generated(current, block) != current:
+                print(
+                    "\ndocs/accuracy.md の数値が実測と一致しません。"
+                    "`make eval` を実行して差分をコミットしてください。",
+                    file=sys.stderr,
+                )
+                raise SystemExit(1)
+            print("\ndocs/accuracy.md: 実測と一致しています。")
 
     if args.assert_thresholds:
         checks = check_thresholds(corpus, full, factory(None))
