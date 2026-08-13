@@ -28,8 +28,8 @@ jobs:
           - os: macos-latest
             python: "3.12"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
           cache: pip
@@ -42,8 +42,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -56,17 +56,20 @@ jobs:
     name: accuracy thresholds
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install -e ".[dev,crypto]"
-      # TODO(P4-2): eval.py に --assert-thresholds を実装し、閾値を下回ったら
-      #             非ゼロ終了させる。閾値は CLAUDE.md §6 の表。
       - name: Evaluate deterministic layers
-        run: python tests/eval.py --address --assert-thresholds | tee eval.txt
-      - uses: actions/upload-artifact@v4
+        shell: bash
+        # pipefail が無いとパイプの終了コードは tee のもの（常に 0）になり、
+        # **閾値を割っても緑になる**。このゲートの意味そのものが消えるので必須。
+        run: |
+          set -o pipefail
+          python tests/eval.py --address --assert-thresholds | tee eval.txt
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: eval-report
@@ -77,7 +80,7 @@ jobs:
     name: secrets guard
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: 追跡してはいけないファイルが無いこと
         run: |
           set -e
@@ -97,8 +100,8 @@ jobs:
     name: install smoke test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: python -m pip install .
