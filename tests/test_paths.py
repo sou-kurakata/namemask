@@ -56,6 +56,28 @@ def test_app_data_dir_frozen_uses_localappdata(
     assert paths.app_data_dir().resolve() == (local / "namemask").resolve()
 
 
+def test_app_data_dir_frozen_without_localappdata_falls_back_to_home(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    """LOCALAPPDATA が無い環境（mac / Linux）でも KeyError にせずホーム配下へ落とす。
+
+    P3-1 のクロスプラットフォーム回帰ガード。`os.environ["LOCALAPPDATA"]` に
+    戻すと非Windowsで CLI が起動不能になる。
+    """
+    home = tmp_path / "home"
+    cwd = tmp_path / "start_cwd"
+    home.mkdir()
+    cwd.mkdir()
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    monkeypatch.setattr(Path, "home", classmethod(lambda cls: home))
+    monkeypatch.chdir(cwd)
+
+    resolved = paths.app_data_dir().resolve()
+    assert resolved == (home / "namemask").resolve()
+    assert cwd.resolve() not in resolved.parents  # cwd には書かない（N3）
+
+
 def test_paths_resolved_at_call_time_not_import(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):

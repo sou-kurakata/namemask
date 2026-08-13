@@ -432,6 +432,17 @@ GiNZA（既定 `ja_ginza`）は原文をそのまま解析して原文座標を�
 - 凍結分岐を残しているのは、同じ `paths.py` を配布物（別プロジェクト）でも使うため。
   通常実行の挙動には影響しない。
 
+**テキスト入出力の符号化と改行**（`cli.py`）— 読み書きはすべて `encoding="utf-8"` を
+明示し、**改行コードを一切変換しない**（`newline=""`）。text モードの既定は環境依存で、
+読みで CRLF を LF に畳み、書きで LF を `os.linesep` に展開する。これを放置すると
+CRLF 文書を mac / Linux で処理すると LF になり、LF 文書を Windows で処理すると CRLF に
+なる ——「原文を書き換えない」「`unmask(mask(x))` は原文に一致する」が壊れる。
+入力ファイル・出力ファイル・レビューHTML・標準入出力（`reconfigure(newline="")`）の
+4経路すべてで変換を止める。回帰ガードは `tests/test_cli.py` の
+`test_crlf_line_endings_survive_roundtrip` / `test_lf_line_endings_are_not_converted` /
+`test_stdin_stdout_pipe_preserves_crlf`（バイト列で比較する。`read_text()` は
+変換してしまい退行を検出できない）。
+
 **設定の読み込み**（`config.py`）— `config.yaml` が無い、または一部が欠けていても
 安全な既定値で動く。既定値は `Config` の各アクセサが持ち、雛形テキストと一致させる。
 雛形の書き出し（`ensure_config_file()`）は `load_config()` の副作用にせず、明示的に

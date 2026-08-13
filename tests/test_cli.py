@@ -144,6 +144,78 @@ def test_cli_encrypted_roundtrip(tmp_path: Path, clients_csv: str, monkeypatch) 
     assert restored.read_text(encoding="utf-8") == TEXT
 
 
+def test_crlf_line_endings_survive_roundtrip(tmp_path: Path, clients_csv: str) -> None:
+    """CRLF の原文は CRLF のまま返る（改行コードを書き換えない・P3-1）。
+
+    text モードの既定（newline=None）は読みで CRLF -> LF、書きで LF -> os.linesep に
+    変換するため、CRLF 文書を POSIX で処理すると LF に、LF 文書を Windows で処理すると
+    CRLF に化ける。バイト列で検証する（read_text は変換してしまい検出できない）。
+    """
+    src = tmp_path / "in.txt"
+    raw = f"{TEXT}\r\n次の行も株式会社アオヤマ商事です。\r\n".encode()
+    src.write_bytes(raw)
+    masked = tmp_path / "masked.txt"
+    mapping = tmp_path / "map.json"
+    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
+                 "-o", str(masked), "-m", str(mapping)]) == 0
+
+    masked_bytes = masked.read_bytes()
+    assert masked_bytes.count(b"\r\n") == 2
+    assert b"\n" not in masked_bytes.replace(b"\r\n", b"")  # 裸の LF が混ざらない
+    assert b"\r\r" not in masked_bytes  # CR の二重化も起きない
+
+    restored = tmp_path / "restored.txt"
+    assert main(["unmask", str(masked), "-m", str(mapping), "-o", str(restored)]) == 0
+    assert restored.read_bytes() == raw
+
+
+def test_lf_line_endings_are_not_converted(tmp_path: Path, clients_csv: str) -> None:
+    """LF のみの原文に CR を足さない（Windows で CRLF に化けないことの防波堤）。"""
+    src = tmp_path / "in.txt"
+    raw = f"{TEXT}\n次の行も株式会社アオヤマ商事です。\n".encode()
+    src.write_bytes(raw)
+    masked = tmp_path / "masked.txt"
+    mapping = tmp_path / "map.json"
+    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
+                 "-o", str(masked), "-m", str(mapping)]) == 0
+    assert b"\r" not in masked.read_bytes()
+
+    restored = tmp_path / "restored.txt"
+    assert main(["unmask", str(masked), "-m", str(mapping), "-o", str(restored)]) == 0
+    assert restored.read_bytes() == raw
+
+
+def test_html_review_does_not_double_cr(tmp_path: Path, clients_csv: str) -> None:
+    """CRLF 原文でもレビューHTMLの改行を二重化しない（P3-1）。"""
+    src = tmp_path / "in.txt"
+    src.write_bytes(f"{TEXT}\r\n2行目。\r\n".encode())
+    html = tmp_path / "review.html"
+    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
+                 "-o", str(tmp_path / "m.txt"), "-m", str(tmp_path / "map.json"),
+                 "--html", str(html)]) == 0
+    assert b"\r\r" not in html.read_bytes()
+
+
+def test_stdin_stdout_pipe_preserves_crlf(tmp_path: Path, clients_csv: str) -> None:
+    """パイプ経路でも改行コードを変換しない（P3-1）。
+
+    実プロセスを起動する唯一のテスト。std ストリームの改行変換は main() を直接
+    呼ぶ経路では再現しない（pytest が差し替えるため）。
+    """
+    import subprocess
+    import sys
+
+    raw = f"{TEXT}\r\n2行目。\r\n".encode()
+    proc = subprocess.run(
+        [sys.executable, "-m", "namemask", "mask", "-",
+         "--no-ner", "--clients", clients_csv,
+         "-m", str(tmp_path / "map.json"), "--quiet"],
+        input=raw, capture_output=True, check=True,
+    )
+    assert proc.stdout.count(b"\r\n") == 2
+    assert b"\n" not in proc.stdout.replace(b"\r\n", b"")
+
+
 def test_mask_reads_stdin(tmp_path: Path, clients_csv: str, monkeypatch) -> None:
     monkeypatch.setattr("sys.stdin", io.StringIO(TEXT))
     masked = tmp_path / "m.txt"

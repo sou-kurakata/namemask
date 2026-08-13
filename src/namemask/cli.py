@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import os
 import sys
 from pathlib import Path
@@ -33,11 +34,32 @@ from namemask.review import render_review_html
 from namemask.types import TYPE_LABEL_JA, MaskResult
 
 
+def _configure_std_streams() -> None:
+    """標準入出力の改行変換を無効にする（原文の改行コードを保つ）。
+
+    text モードの既定は環境依存で、CRLF <-> LF を勝手に変換しうる。原文を書き換え
+    ないことが不変条件なので、パイプ経路でも変換させない。pytest 等が差し替えた
+    ストリームには reconfigure が無いため、存在を確認してから呼ぶ。
+    """
+    for stream in (sys.stdin, sys.stdout):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        # 既に閉じている・再設定できないストリームでも CLI は止めない。
+        with contextlib.suppress(ValueError, OSError):
+            reconfigure(newline="")
+
+
 def _read_input(path: str | None) -> str:
-    """path が None/"-" なら stdin、それ以外はファイルから UTF-8 で読む。"""
+    """path が None/"-" なら stdin、それ以外はファイルから UTF-8 で読む。
+
+    newline="" で改行コードを変換しない。既定（newline=None）は読みで CRLF を LF に
+    畳むため、CRLF 文書が LF になって返る（＝原文を書き換える）。
+    """
     if path is None or path == "-":
         return sys.stdin.read()
-    return Path(path).read_text(encoding="utf-8")
+    with open(path, encoding="utf-8", newline="") as f:
+        return f.read()
 
 
 def _write_output(path: str | None, text: str) -> None:
@@ -46,7 +68,10 @@ def _write_output(path: str | None, text: str) -> None:
         if text and not text.endswith("\n"):
             sys.stdout.write("\n")
     else:
-        Path(path).write_text(text, encoding="utf-8")
+        # newline="" で書き戻す。既定（newline=None）は LF を os.linesep に変換し、
+        # 読みで保った CRLF を Windows で CR+CRLF に二重化する。
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            f.write(text)
 
 
 def _render_report(result: MaskResult) -> str:
@@ -87,9 +112,10 @@ def _cmd_mask(args: argparse.Namespace) -> int:
         enc = "（AES暗号化）" if pw else "（生の機密。復元後は `unmask --wipe` で破棄推奨）"
         print(f"mapping 保存: {saved}{enc}", file=sys.stderr)
     if args.html:
-        Path(args.html).write_text(
-            render_review_html(text, result), encoding="utf-8"
-        )
+        # 原文の CRLF をそのまま埋め込むので newline="" で書く（変換すると CR が
+        # 二重化して、レビュー画面の改行が原文とずれる）。
+        with open(args.html, "w", encoding="utf-8", newline="") as f:
+            f.write(render_review_html(text, result))
         print(f"レビューHTML: {args.html}（原文を含む。外部に出さないこと）",
               file=sys.stderr)
     if not args.quiet:
@@ -174,6 +200,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _configure_std_streams()
     parser = build_parser()
     args = parser.parse_args(argv)
     return args.func(args)
