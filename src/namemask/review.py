@@ -53,7 +53,7 @@ def render_review_html(original: str, result: MaskResult) -> str:
         for it in result.report
     )
     if not rows:
-        rows = '<tr><td colspan=4>（検出なし）</td></tr>'
+        rows = "<tr><td colspan=4>（検出なし）</td></tr>"
 
     return (
         "<!doctype html>\n"

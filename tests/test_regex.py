@@ -20,7 +20,7 @@ def test_mynumber_check_digit_known_values() -> None:
     assert mynumber_check_digit("12345678901") == 8
     assert is_valid_mynumber("123456789018")
     assert not is_valid_mynumber("123456789019")  # CD 不正
-    assert not is_valid_mynumber("12345678901")   # 桁不足
+    assert not is_valid_mynumber("12345678901")  # 桁不足
 
 
 def test_mynumber_valid_detected_invalid_ignored() -> None:
@@ -57,16 +57,22 @@ def test_phone_variants() -> None:
         ("フリー 0120-123-456 受付", "0120-123-456"),
         ("IP 050-1111-2222 まで", "050-1111-2222"),
         ("FAX 0664001234 へ", "0664001234"),
-        ("小笠原 04992-2-1234 まで", "04992-2-1234"),   # 5桁市外局番
-        ("白川村 05769-6-1234 です", "05769-6-1234"),   # 5桁市外局番
+        ("小笠原 04992-2-1234 まで", "04992-2-1234"),  # 5桁市外局番
+        ("白川村 05769-6-1234 です", "05769-6-1234"),  # 5桁市外局番
     ]:
         assert (EntityType.PHONE, expect) in _shadow_types(t), t
 
 
 def test_phone_does_not_match_dates() -> None:
     # 日付は電話番号として誤検出しない（2桁市外局番は 03/06 の 4-4 のみ）。
-    for t in ["締切は07-07-2026です", "03-07-2026", "06-30-2025",
-              "01-02-2020", "12-31-2025", "03-1-2026"]:
+    for t in [
+        "締切は07-07-2026です",
+        "03-07-2026",
+        "06-30-2025",
+        "01-02-2020",
+        "12-31-2025",
+        "03-1-2026",
+    ]:
         assert not [x for x in _shadow_types(t) if x[0] == EntityType.PHONE], t
 
 

@@ -33,7 +33,10 @@ def mask_text(
     """
     cfg = config or load_config()
     detectors = build_default_pipeline(
-        cfg, clients_csv, use_ner=use_ner, use_address=use_address,
+        cfg,
+        clients_csv,
+        use_ner=use_ner,
+        use_address=use_address,
     )
     verifier = build_verifier(cfg, use_llm=use_llm, client=llm_client)
     spans = run_pipeline(text, detectors, verifier)

@@ -40,6 +40,7 @@ def test_wrong_passphrase_rejected() -> None:
 
 def test_tamper_detected() -> None:
     import json
+
     token = crypto.encrypt_json({"a": "b"}, "pw")
     env = json.loads(token)
     env["token"] = env["token"][:-4] + "AAAA"  # 改竄

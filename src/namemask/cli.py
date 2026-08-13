@@ -79,9 +79,7 @@ def _render_report(result: MaskResult) -> str:
     for item in result.report:
         label = TYPE_LABEL_JA.get(item.type, item.type)
         srcs = ",".join(item.sources) if item.sources else "-"
-        lines.append(
-            f"  {item.token:12}  {label:6}  {item.original}   <- {srcs}"
-        )
+        lines.append(f"  {item.token:12}  {label:6}  {item.original}   <- {srcs}")
     lines.append("※ 外部AIへ送る前に、上記の検出内容を必ずレビューしてください。")
     return "\n".join(lines)
 
@@ -116,8 +114,7 @@ def _cmd_mask(args: argparse.Namespace) -> int:
         # 二重化して、レビュー画面の改行が原文とずれる）。
         with open(args.html, "w", encoding="utf-8", newline="") as f:
             f.write(render_review_html(text, result))
-        print(f"レビューHTML: {args.html}（原文を含む。外部に出さないこと）",
-              file=sys.stderr)
+        print(f"レビューHTML: {args.html}（原文を含む。外部に出さないこと）", file=sys.stderr)
     if not args.quiet:
         print(_render_report(result), file=sys.stderr)
     return 0
@@ -165,35 +162,45 @@ def build_parser() -> argparse.ArgumentParser:
     m = sub.add_parser("mask", help="テキストを仮名化する")
     m.add_argument("input", nargs="?", help="入力ファイル（省略/'-' で stdin）")
     m.add_argument("-o", "--out", help="マスク済み出力先（省略で stdout）")
-    m.add_argument("-m", "--mapping", default=default_mapping,
-                   help="mapping 保存先（既定: app_data_dir()/.session/mapping.json）")
+    m.add_argument(
+        "-m",
+        "--mapping",
+        default=default_mapping,
+        help="mapping 保存先（既定: app_data_dir()/.session/mapping.json）",
+    )
     m.add_argument("--clients", help="取引先マスタ CSV（省略で config 参照）")
     m.add_argument("--no-ner", action="store_true", help="NER 層を使わない")
-    m.add_argument("--llm", action="store_true",
-                   help="LLM 検証パス（Ollama・追加専用）を後段に付ける")
+    m.add_argument(
+        "--llm", action="store_true", help="LLM 検証パス（Ollama・追加専用）を後段に付ける"
+    )
     m.add_argument("--html", help="レビュー用HTMLの出力先（原文を含む・要注意）")
-    m.add_argument("--address", action="store_true",
-                   help="住所・郵便番号を検出する（P7）")
-    m.add_argument("--encrypt", action="store_true",
-                   help=f"mapping を AES 暗号化して保存（環境変数 {_PASSPHRASE_ENV} 必須）")
-    m.add_argument("--no-save", action="store_true",
-                   help="mapping をファイル保存しない（メモリのみ）")
+    m.add_argument("--address", action="store_true", help="住所・郵便番号を検出する（P7）")
+    m.add_argument(
+        "--encrypt",
+        action="store_true",
+        help=f"mapping を AES 暗号化して保存（環境変数 {_PASSPHRASE_ENV} 必須）",
+    )
+    m.add_argument(
+        "--no-save", action="store_true", help="mapping をファイル保存しない（メモリのみ）"
+    )
     m.add_argument("--quiet", action="store_true", help="レポートを表示しない")
     m.set_defaults(func=_cmd_mask)
 
     u = sub.add_parser("unmask", help="応答のプレースホルダを復元する")
     u.add_argument("input", nargs="?", help="入力ファイル（省略/'-' で stdin）")
     u.add_argument("-o", "--out", help="復元済み出力先（省略で stdout）")
-    u.add_argument("-m", "--mapping", default=default_mapping,
-                   help="mapping ファイル（既定: app_data_dir()/.session/mapping.json）")
-    u.add_argument("--wipe", action="store_true",
-                   help="復元後に mapping を破棄する")
+    u.add_argument(
+        "-m",
+        "--mapping",
+        default=default_mapping,
+        help="mapping ファイル（既定: app_data_dir()/.session/mapping.json）",
+    )
+    u.add_argument("--wipe", action="store_true", help="復元後に mapping を破棄する")
     u.add_argument("--quiet", action="store_true", help="警告を表示しない")
     u.set_defaults(func=_cmd_unmask)
 
     w = sub.add_parser("wipe", help="mapping を破棄する")
-    w.add_argument("-m", "--mapping", default=default_mapping,
-                   help="破棄する mapping ファイル")
+    w.add_argument("-m", "--mapping", default=default_mapping, help="破棄する mapping ファイル")
     w.set_defaults(func=_cmd_wipe)
 
     return p

@@ -55,16 +55,20 @@ def build_default_pipeline(
         denylist = FoldNormalizingDetector(DenylistDetector.from_config(cfg))
 
     all_layers: dict[str, Detector] = {
-        "regex": regex, "structural": structural, "denylist": denylist,
+        "regex": regex,
+        "structural": structural,
+        "denylist": denylist,
     }
     if use_address:
         all_layers["address"] = NormalizingDetector(AddressDetector())
     if use_ner:
         all_layers["ner"] = NerDetector.from_config(cfg)
 
-    selected = all_layers if layers is None else {
-        name: det for name, det in all_layers.items() if name in layers
-    }
+    selected = (
+        all_layers
+        if layers is None
+        else {name: det for name, det in all_layers.items() if name in layers}
+    )
     return list(selected.values())
 
 
@@ -121,14 +125,14 @@ def make_pipeline(
     disabled に層名（regex/structural/denylist/ner/address/llm）を渡すとその層を除く。
     use_llm=True または llm_client 注入で LLM 検証パスを後段に付ける。
     """
-    names = (
-        ALL_LAYER_NAMES
-        + (("address",) if use_address else ())
-        + (("ner",) if use_ner else ())
-    )
+    names = ALL_LAYER_NAMES + (("address",) if use_address else ()) + (("ner",) if use_ner else ())
     layers = set(names) - ({disabled} if disabled else set())
     detectors = build_default_pipeline(
-        config, clients_csv, layers=layers, use_ner=use_ner, use_address=use_address,
+        config,
+        clients_csv,
+        layers=layers,
+        use_ner=use_ner,
+        use_address=use_address,
     )
     want_llm = (use_llm or llm_client is not None) and disabled != "llm"
     verifier = build_verifier(config, use_llm=want_llm, client=llm_client)
@@ -144,9 +148,7 @@ class PipelineDetector:
 
     name = "pipeline"
 
-    def __init__(
-        self, detectors: list[Detector], verifier: LlmVerifier | None = None
-    ) -> None:
+    def __init__(self, detectors: list[Detector], verifier: LlmVerifier | None = None) -> None:
         self._detectors = detectors
         self._verifier = verifier
 

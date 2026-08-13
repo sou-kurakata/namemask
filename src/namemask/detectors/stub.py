@@ -1,4 +1,4 @@
-""" スタブ検出器。
+"""スタブ検出器。
 
 golden の正解エンティティ（surface, type）を受け取り、本文中の全出現を
 スパン化して返す。これにより「可逆性（round-trip）」を検出精度から切り離し、
@@ -38,8 +38,7 @@ class GoldenStubDetector:
                     for i in range(start, end):
                         consumed[i] = True
                     spans.append(
-                        Span(start=start, end=end, type=ent.type,
-                             score=1.0, sources=(self.name,))
+                        Span(start=start, end=end, type=ent.type, score=1.0, sources=(self.name,))
                     )
         spans.sort(key=lambda s: (s.start, s.end))
         return spans

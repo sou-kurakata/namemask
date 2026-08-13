@@ -16,7 +16,7 @@ import os
 
 _MAGIC = "namemask-enc-1"
 # Scrypt パラメータ（対話用途として妥当なコスト）。
-_SCRYPT_N = 2 ** 14
+_SCRYPT_N = 2**14
 _SCRYPT_R = 8
 _SCRYPT_P = 1
 
@@ -27,8 +27,7 @@ def _imports():
         from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
     except Exception as e:  # 未導入
         raise RuntimeError(
-            "mapping の暗号化には 'cryptography' が必要です "
-            "（pip install cryptography）。"
+            "mapping の暗号化には 'cryptography' が必要です （pip install cryptography）。"
         ) from e
     return Fernet, InvalidToken, Scrypt
 
@@ -43,9 +42,7 @@ def encrypt_json(obj: dict, passphrase: str) -> str:
     Fernet, _InvalidToken, _Scrypt = _imports()
     salt = os.urandom(16)
     key = _derive_key(passphrase, salt)
-    token = Fernet(key).encrypt(
-        json.dumps(obj, ensure_ascii=False).encode("utf-8")
-    )
+    token = Fernet(key).encrypt(json.dumps(obj, ensure_ascii=False).encode("utf-8"))
     envelope = {
         "magic": _MAGIC,
         "salt": base64.b64encode(salt).decode("ascii"),
@@ -70,7 +67,5 @@ def decrypt_json(text: str, passphrase: str) -> dict:
     try:
         plaintext = Fernet(key).decrypt(env["token"].encode("ascii"))
     except InvalidToken as e:
-        raise ValueError(
-            "mapping の復号に失敗しました（パスフレーズ不一致または改竄）。"
-        ) from e
+        raise ValueError("mapping の復号に失敗しました（パスフレーズ不一致または改竄）。") from e
     return json.loads(plaintext.decode("utf-8"))

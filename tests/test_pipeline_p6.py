@@ -43,8 +43,9 @@ def test_llm_recovers_unknown_entities(unknown_cases, clients_csv: str) -> None:
 
 def test_llm_on_off_recall_gain(unknown_cases, clients_csv: str) -> None:
     off = evaluate(unknown_cases, [make_pipeline(Config(), clients_csv)])
-    on = evaluate(unknown_cases,
-                  [make_pipeline(Config(), clients_csv, llm_client=FakeClient(_UNKNOWN))])
+    on = evaluate(
+        unknown_cases, [make_pipeline(Config(), clients_csv, llm_client=FakeClient(_UNKNOWN))]
+    )
     assert on.recall > off.recall
 
 
@@ -62,14 +63,15 @@ def test_llm_is_additive_only(clients_csv: str) -> None:
     text = "株式会社アオヤマ商事とオリオン企画が提携。"
     det = make_pipeline(Config(), clients_csv)
     llm = make_pipeline(Config(), clients_csv, llm_client=FakeClient(_UNKNOWN))
-    det_surfaces = {text[s.start:s.end] for s in det.detect(text)}
-    llm_surfaces = {text[s.start:s.end] for s in llm.detect(text)}
+    det_surfaces = {text[s.start : s.end] for s in det.detect(text)}
+    llm_surfaces = {text[s.start : s.end] for s in llm.detect(text)}
     # 決定的で拾えた社名は LLM 有効でも残り、かつオリオン企画が増える。
     assert det_surfaces <= llm_surfaces
     assert "オリオン企画" in llm_surfaces
 
 
 # --- 実 Ollama がある場合のみの統合スモーク ---
+
 
 def _ollama_reachable(host: str = "127.0.0.1", port: int = 11434) -> bool:
     try:

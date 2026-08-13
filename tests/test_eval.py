@@ -22,8 +22,8 @@ class _FakeDetector:
     def detect(self, text: str) -> list[Span]:
         if text == "山田と田中":
             return [
-                Span(0, 2, P, sources=("fake",)),        # 山田: 正解（exact）
-                Span(2, 3, L, sources=("fake",)),        # と: 誤検出
+                Span(0, 2, P, sources=("fake",)),  # 山田: 正解（exact）
+                Span(2, 3, L, sources=("fake",)),  # と: 誤検出
             ]
         return []
 

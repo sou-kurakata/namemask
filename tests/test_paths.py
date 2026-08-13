@@ -47,9 +47,7 @@ def test_app_data_dir_dev_mode_is_cwd(monkeypatch: pytest.MonkeyPatch, tmp_path:
     assert paths.app_data_dir().resolve() == cwd.resolve()
 
 
-def test_app_data_dir_frozen_uses_localappdata(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-):
+def test_app_data_dir_frozen_uses_localappdata(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     local = tmp_path / "LocalAppData"
     cwd = tmp_path / "start_cwd"
     _make_frozen(monkeypatch, local, cwd)
@@ -78,18 +76,17 @@ def test_app_data_dir_frozen_without_localappdata_falls_back_to_home(
     assert cwd.resolve() not in resolved.parents  # cwd には書かない（N3）
 
 
-def test_paths_resolved_at_call_time_not_import(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-):
+def test_paths_resolved_at_call_time_not_import(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     """import 時に固定されていれば、後から frozen にしても cwd を指すはず。
     遅延解決なら LOCALAPPDATA 側を指す（ADR-106 の回帰ガード）。"""
     local = tmp_path / "LocalAppData"
     cwd = tmp_path / "start_cwd"
     _make_frozen(monkeypatch, local, cwd)
     assert paths.config_path().resolve() == (local / "namemask" / "config.yaml").resolve()
-    assert paths.mapping_path().resolve() == (
-        local / "namemask" / ".session" / "mapping.json"
-    ).resolve()
+    assert (
+        paths.mapping_path().resolve()
+        == (local / "namemask" / ".session" / "mapping.json").resolve()
+    )
 
 
 # --- 凍結時: LOCALAPPDATA へ書き cwd へ書かない ---------------------------

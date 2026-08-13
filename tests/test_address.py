@@ -11,7 +11,7 @@ from namemask.types import EntityType
 
 
 def _detect(text: str) -> list[tuple[str, str]]:
-    return [(s.type, text[s.start:s.end]) for s in AddressDetector().detect_shadow(text)]
+    return [(s.type, text[s.start : s.end]) for s in AddressDetector().detect_shadow(text)]
 
 
 def test_postal_and_prefecture_address_detected() -> None:
@@ -28,8 +28,13 @@ def test_bare_place_names_not_detected() -> None:
 
 def test_compound_words_not_detected_as_address() -> None:
     # 都道府県直後にマーカーが来る複合語（都市部・市場・都民 等）は住所でない。
-    for t in ["東京都市部の再開発", "京都府市場調査の結果", "東京都心部の混雑",
-              "大阪府民の声を聞く", "東京都議会の議決"]:
+    for t in [
+        "東京都市部の再開発",
+        "京都府市場調査の結果",
+        "東京都心部の混雑",
+        "大阪府民の声を聞く",
+        "東京都議会の議決",
+    ]:
         assert _detect(t) == [], t
     # 1文字市名の実在住所は拾う（堺市・津市）。
     assert (EntityType.ADDRESS, "大阪府堺市堺区") in _detect("大阪府堺市堺区で開催")
@@ -42,12 +47,13 @@ def test_postal_requires_marker() -> None:
 
 # ---- パイプライン統合 ----
 
+
 def test_address_layer_opt_in_recall(corpus: list[Case], clients_csv: str) -> None:
     sub = [c for c in corpus if c.category == "address"]
     assert sub
     off = evaluate(sub, [make_pipeline(Config(), clients_csv)])
     on = evaluate(sub, [make_pipeline(Config(), clients_csv, use_address=True)])
-    assert off.type_recall(EntityType.ADDRESS) < 1.0      # 既定では拾わない
+    assert off.type_recall(EntityType.ADDRESS) < 1.0  # 既定では拾わない
     assert on.type_recall(EntityType.ADDRESS) == 1.0, on.summary()
 
 
@@ -69,6 +75,7 @@ def test_address_layer_no_false_positive_on_traps(corpus: list[Case], clients_cs
 
 # ---- ハイフン類バリアント（2026-07 P7後レビュー修正 2）----
 
+
 def test_postal_code_hyphen_variants() -> None:
     # NFKC で '-' に吸収されないハイフン類（− ‐ ー 等）でも郵便番号を拾う。
     det = AddressDetector()
@@ -84,4 +91,4 @@ def test_address_body_hyphen_variants() -> None:
     spans = det.detect_shadow(text)
     assert spans, "address with U+2212 separators missed"
     s = spans[0]
-    assert text[s.start:s.end] == "大阪府大阪市北区梅田3−1−1"
+    assert text[s.start : s.end] == "大阪府大阪市北区梅田3−1−1"

@@ -47,7 +47,7 @@ TYPE_LABEL_JA: dict[str, str] = {
 SOURCE_PRIORITY: dict[str, int] = {
     "denylist": 40,
     "structural": 30,
-    "address": 25,   # 住所は決定的パターン。regex 系と同格〜やや上
+    "address": 25,  # 住所は決定的パターン。regex 系と同格〜やや上
     "regex": 20,
     "ner": 10,
     "llm": 5,

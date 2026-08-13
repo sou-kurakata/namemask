@@ -12,9 +12,7 @@ def _detect(text: str) -> list[tuple[str, str]]:
 
 
 def test_org_prefix_and_suffix() -> None:
-    assert (EntityType.ORGANIZATION, "株式会社アオヤマ商事") in _detect(
-        "株式会社アオヤマ商事の件"
-    )
+    assert (EntityType.ORGANIZATION, "株式会社アオヤマ商事") in _detect("株式会社アオヤマ商事の件")
     assert (EntityType.ORGANIZATION, "ツバサ工業株式会社") in _detect(
         "本日、ツバサ工業株式会社へ発注"
     )
@@ -22,9 +20,7 @@ def test_org_prefix_and_suffix() -> None:
 
 def test_org_abbrev_paren_form_on_shadow() -> None:
     # 影テキストでは (株) 形（㈱/（株）は §5.1 が正規化）。
-    assert (EntityType.ORGANIZATION, "(株)キリシマ電機") in _detect(
-        "(株)キリシマ電機の田中"
-    )
+    assert (EntityType.ORGANIZATION, "(株)キリシマ電機") in _detect("(株)キリシマ電機の田中")
 
 
 def test_org_keigo_name_only() -> None:

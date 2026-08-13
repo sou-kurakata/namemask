@@ -96,11 +96,11 @@ def test_roundtrip_with_preexisting_lenient_placeholder() -> None:
 @pytest.mark.parametrize(
     "mutator",
     [
-        lambda t: t,                       # 無改変
-        lambda t: t.replace("[[", "[").replace("]]", "]"),   # 角括弧1個
+        lambda t: t,  # 無改変
+        lambda t: t.replace("[[", "[").replace("]]", "]"),  # 角括弧1個
         lambda t: t.replace("[[", "【").replace("]]", "】"),  # 隅付き括弧
-        lambda t: t.replace("_", " _"),                       # 空白混入
-        lambda t: t.replace("_", " "),                        # アンダースコア脱落
+        lambda t: t.replace("_", " _"),  # 空白混入
+        lambda t: t.replace("_", " "),  # アンダースコア脱落
     ],
 )
 def test_placeholder_mutation_restore(corpus: list[Case], mutator) -> None:

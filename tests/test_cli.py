@@ -17,10 +17,19 @@ def _mask(tmp_path: Path, clients_csv: str, text: str = TEXT) -> tuple[Path, Pat
     src.write_text(text, encoding="utf-8")
     masked = tmp_path / "masked.txt"
     mapping = tmp_path / "map.json"
-    rc = main([
-        "mask", str(src), "--no-ner", "--clients", clients_csv,
-        "-o", str(masked), "-m", str(mapping),
-    ])
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(masked),
+            "-m",
+            str(mapping),
+        ]
+    )
     assert rc == 0
     return masked, mapping
 
@@ -60,8 +69,7 @@ def test_cli_roundtrip_with_mutated_placeholders(tmp_path: Path, clients_csv: st
 
 def test_unmask_wipe_removes_mapping(tmp_path: Path, clients_csv: str) -> None:
     masked, mapping = _mask(tmp_path, clients_csv)
-    rc = main(["unmask", str(masked), "-m", str(mapping),
-               "-o", str(tmp_path / "r.txt"), "--wipe"])
+    rc = main(["unmask", str(masked), "-m", str(mapping), "-o", str(tmp_path / "r.txt"), "--wipe"])
     assert rc == 0
     assert not mapping.exists()
 
@@ -85,8 +93,20 @@ def test_no_save_skips_mapping_file(tmp_path: Path, clients_csv: str) -> None:
     src = tmp_path / "in.txt"
     src.write_text(TEXT, encoding="utf-8")
     mapping = tmp_path / "map.json"
-    rc = main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-               "-o", str(tmp_path / "m.txt"), "-m", str(mapping), "--no-save"])
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(tmp_path / "m.txt"),
+            "-m",
+            str(mapping),
+            "--no-save",
+        ]
+    )
     assert rc == 0
     assert not mapping.exists()
 
@@ -109,9 +129,21 @@ def test_mask_html_review(tmp_path: Path, clients_csv: str) -> None:
     src = tmp_path / "in.txt"
     src.write_text(TEXT, encoding="utf-8")
     html = tmp_path / "review.html"
-    rc = main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-               "-o", str(tmp_path / "m.txt"), "-m", str(tmp_path / "map.json"),
-               "--html", str(html)])
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(tmp_path / "m.txt"),
+            "-m",
+            str(tmp_path / "map.json"),
+            "--html",
+            str(html),
+        ]
+    )
     assert rc == 0
     doc = html.read_text(encoding="utf-8")
     assert doc.startswith("<!doctype html>")
@@ -122,9 +154,20 @@ def test_mask_encrypt_requires_env(tmp_path: Path, clients_csv: str, monkeypatch
     monkeypatch.delenv("NAMEMASK_PASSPHRASE", raising=False)
     src = tmp_path / "in.txt"
     src.write_text(TEXT, encoding="utf-8")
-    rc = main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-               "-o", str(tmp_path / "m.txt"), "-m", str(tmp_path / "map.json"),
-               "--encrypt"])
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(tmp_path / "m.txt"),
+            "-m",
+            str(tmp_path / "map.json"),
+            "--encrypt",
+        ]
+    )
     assert rc == 2  # パスフレーズ未設定はエラー
 
 
@@ -135,8 +178,23 @@ def test_cli_encrypted_roundtrip(tmp_path: Path, clients_csv: str, monkeypatch) 
     src.write_text(TEXT, encoding="utf-8")
     masked = tmp_path / "masked.txt"
     mapping = tmp_path / "map.json"
-    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-                 "-o", str(masked), "-m", str(mapping), "--encrypt"]) == 0
+    assert (
+        main(
+            [
+                "mask",
+                str(src),
+                "--no-ner",
+                "--clients",
+                clients_csv,
+                "-o",
+                str(masked),
+                "-m",
+                str(mapping),
+                "--encrypt",
+            ]
+        )
+        == 0
+    )
     raw = mapping.read_text(encoding="utf-8")
     assert "アオヤマ商事" not in raw  # 平文で機密が残らない
     restored = tmp_path / "restored.txt"
@@ -156,8 +214,22 @@ def test_crlf_line_endings_survive_roundtrip(tmp_path: Path, clients_csv: str) -
     src.write_bytes(raw)
     masked = tmp_path / "masked.txt"
     mapping = tmp_path / "map.json"
-    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-                 "-o", str(masked), "-m", str(mapping)]) == 0
+    assert (
+        main(
+            [
+                "mask",
+                str(src),
+                "--no-ner",
+                "--clients",
+                clients_csv,
+                "-o",
+                str(masked),
+                "-m",
+                str(mapping),
+            ]
+        )
+        == 0
+    )
 
     masked_bytes = masked.read_bytes()
     assert masked_bytes.count(b"\r\n") == 2
@@ -176,8 +248,22 @@ def test_lf_line_endings_are_not_converted(tmp_path: Path, clients_csv: str) -> 
     src.write_bytes(raw)
     masked = tmp_path / "masked.txt"
     mapping = tmp_path / "map.json"
-    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-                 "-o", str(masked), "-m", str(mapping)]) == 0
+    assert (
+        main(
+            [
+                "mask",
+                str(src),
+                "--no-ner",
+                "--clients",
+                clients_csv,
+                "-o",
+                str(masked),
+                "-m",
+                str(mapping),
+            ]
+        )
+        == 0
+    )
     assert b"\r" not in masked.read_bytes()
 
     restored = tmp_path / "restored.txt"
@@ -190,9 +276,24 @@ def test_html_review_does_not_double_cr(tmp_path: Path, clients_csv: str) -> Non
     src = tmp_path / "in.txt"
     src.write_bytes(f"{TEXT}\r\n2行目。\r\n".encode())
     html = tmp_path / "review.html"
-    assert main(["mask", str(src), "--no-ner", "--clients", clients_csv,
-                 "-o", str(tmp_path / "m.txt"), "-m", str(tmp_path / "map.json"),
-                 "--html", str(html)]) == 0
+    assert (
+        main(
+            [
+                "mask",
+                str(src),
+                "--no-ner",
+                "--clients",
+                clients_csv,
+                "-o",
+                str(tmp_path / "m.txt"),
+                "-m",
+                str(tmp_path / "map.json"),
+                "--html",
+                str(html),
+            ]
+        )
+        == 0
+    )
     assert b"\r\r" not in html.read_bytes()
 
 
@@ -207,10 +308,22 @@ def test_stdin_stdout_pipe_preserves_crlf(tmp_path: Path, clients_csv: str) -> N
 
     raw = f"{TEXT}\r\n2行目。\r\n".encode()
     proc = subprocess.run(
-        [sys.executable, "-m", "namemask", "mask", "-",
-         "--no-ner", "--clients", clients_csv,
-         "-m", str(tmp_path / "map.json"), "--quiet"],
-        input=raw, capture_output=True, check=True,
+        [
+            sys.executable,
+            "-m",
+            "namemask",
+            "mask",
+            "-",
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-m",
+            str(tmp_path / "map.json"),
+            "--quiet",
+        ],
+        input=raw,
+        capture_output=True,
+        check=True,
     )
     assert proc.stdout.count(b"\r\n") == 2
     assert b"\n" not in proc.stdout.replace(b"\r\n", b"")
@@ -219,7 +332,18 @@ def test_stdin_stdout_pipe_preserves_crlf(tmp_path: Path, clients_csv: str) -> N
 def test_mask_reads_stdin(tmp_path: Path, clients_csv: str, monkeypatch) -> None:
     monkeypatch.setattr("sys.stdin", io.StringIO(TEXT))
     masked = tmp_path / "m.txt"
-    rc = main(["mask", "-", "--no-ner", "--clients", clients_csv,
-               "-o", str(masked), "-m", str(tmp_path / "map.json")])
+    rc = main(
+        [
+            "mask",
+            "-",
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(masked),
+            "-m",
+            str(tmp_path / "map.json"),
+        ]
+    )
     assert rc == 0
     assert "[[組織_1]]" in masked.read_text(encoding="utf-8")

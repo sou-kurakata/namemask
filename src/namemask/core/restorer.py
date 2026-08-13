@@ -73,10 +73,7 @@ def unmask(text: str, mapping: dict[str, str]) -> RestoreResult:
         if pat.search(result):
             result, n = pat.subn(mapping[token], result)
             if n:
-                warnings.append(
-                    f"改変されたプレースホルダを寛容照合で復元しました: "
-                    f"{token} (×{n})"
-                )
+                warnings.append(f"改変されたプレースホルダを寛容照合で復元しました: {token} (×{n})")
 
     # 3) 未解決検出: mapping に無いプレースホルダらしき残骸を推測せず報告。
     unresolved: list[str] = []

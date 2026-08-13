@@ -32,6 +32,4 @@ def pipeline(clients_csv: str):
     from namemask.config import Config
     from namemask.pipeline.build import PipelineDetector, build_default_pipeline
 
-    return PipelineDetector(
-        build_default_pipeline(Config(), clients_csv=clients_csv)
-    )
+    return PipelineDetector(build_default_pipeline(Config(), clients_csv=clients_csv))

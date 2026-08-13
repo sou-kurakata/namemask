@@ -17,6 +17,14 @@ def test_person_and_org_and_location_mapping() -> None:
 
 def test_unknown_labels_return_none() -> None:
     # 数値・製品・役職などは未マッピング（呼び出し側で warning・破棄）。
-    for lab in ["Age", "Date", "Phone_Number", "Email", "Title_Other",
-                "Position_Vocation", "ID_Number", "NoSuchLabel"]:
+    for lab in [
+        "Age",
+        "Date",
+        "Phone_Number",
+        "Email",
+        "Title_Other",
+        "Position_Vocation",
+        "ID_Number",
+        "NoSuchLabel",
+    ]:
         assert map_label(lab) is None, lab

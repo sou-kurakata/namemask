@@ -57,8 +57,7 @@ class NormalizedText:
         """
         if s_start < 0 or s_end > len(self.shadow) or s_end <= s_start:
             raise ValueError(
-                f"invalid shadow span [{s_start}, {s_end}) for shadow len "
-                f"{len(self.shadow)}"
+                f"invalid shadow span [{s_start}, {s_end}) for shadow len {len(self.shadow)}"
             )
         orig_start = self.charmap[s_start]
         orig_end = self.charmap[s_end - 1] + 1
@@ -118,9 +117,7 @@ def fold_normalize(text: str) -> NormalizedText:
         else:
             parts.append(ch)
             charmap.append(orig_i)
-    return NormalizedText(
-        original=text, shadow="".join(parts), charmap=tuple(charmap)
-    )
+    return NormalizedText(original=text, shadow="".join(parts), charmap=tuple(charmap))
 
 
 def fold_for_dict(text: str) -> str:

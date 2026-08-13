@@ -34,9 +34,7 @@ _PREFECTURES = (
 # 住所本体（ひらがな除外で助詞・文の続きで停止）。丁目番地号は漢字なので一-龥に含む。
 # 番地区切りのハイフンは NFKC 非吸収のバリアント（− ‐ ー 等）を全て許容する。
 _BODY = f"[一-龥ァ-ヶ0-9{_HYPHEN}]"
-_ADDRESS_RE = re.compile(
-    f"(?P<pref>{_PREFECTURES})(?P<body>(?:{_BODY}){{1,40}})"
-)
+_ADDRESS_RE = re.compile(f"(?P<pref>{_PREFECTURES})(?P<body>(?:{_BODY}){{1,40}})")
 # 郵便番号は 〒 付きのみ（裸の 3-4 桁誤検出を避ける）。区切りもハイフン類を許容。
 _POSTAL_RE = re.compile(rf"〒\s?\d{{3}}[{_HYPHEN}]\d{{4}}")
 

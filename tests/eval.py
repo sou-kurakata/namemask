@@ -49,10 +49,7 @@ def load_corpus(path: Path | str = CORPUS_PATH) -> list[Case]:
                 id=c["id"],
                 category=c.get("category", ""),
                 text=c["text"],
-                entities=[
-                Entity(e["surface"], e["type"], e.get("nth"))
-                for e in c["entities"]
-            ],
+                entities=[Entity(e["surface"], e["type"], e.get("nth")) for e in c["entities"]],
                 note=c.get("note", ""),
             )
         )
@@ -86,10 +83,7 @@ def _recall_hits(gold: list[Span], pred: list[Span], *, exact: bool) -> list[boo
     hits = []
     for g in gold:
         if exact:
-            hit = any(
-                p.type == g.type and p.start == g.start and p.end == g.end
-                for p in pred
-            )
+            hit = any(p.type == g.type and p.start == g.start and p.end == g.end for p in pred)
         else:
             hit = any(p.type == g.type and p.overlaps(g) for p in pred)
         hits.append(hit)
@@ -98,10 +92,7 @@ def _recall_hits(gold: list[Span], pred: list[Span], *, exact: bool) -> list[boo
 
 def _precision_hits(gold: list[Span], pred: list[Span]) -> list[bool]:
     """各 pred スパンが正しい（型一致で gold と重なる）か。"""
-    return [
-        any(g.type == p.type and g.overlaps(p) for g in gold)
-        for p in pred
-    ]
+    return [any(g.type == p.type and g.overlaps(p) for g in gold) for p in pred]
 
 
 @dataclass
@@ -145,22 +136,22 @@ class EvalReport:
     def summary(self, include_layer_contribution: bool = True) -> str:
         lines = [
             f"cases={self.n_cases} gold={self.gold_total} pred={self.pred_total}",
-            f"recall(partial)={self.recall:.4f} "
-            f"precision={self.precision:.4f} f1={self.f1:.4f}",
+            f"recall(partial)={self.recall:.4f} precision={self.precision:.4f} f1={self.f1:.4f}",
             f"exact_recall={self.exact_recall:.4f}",
             "per-type recall:",
         ]
         for t in ALL_TYPES:
             if self.per_type_gold.get(t):
-                lines.append(f"  {t:12s} {self.type_recall(t):.4f} "
-                             f"({self.per_type_hits.get(t,0)}/{self.per_type_gold[t]})")
+                lines.append(
+                    f"  {t:12s} {self.type_recall(t):.4f} "
+                    f"({self.per_type_hits.get(t, 0)}/{self.per_type_gold[t]})"
+                )
         # source ベースの層別寄与は「各検出器が別々の source を持つ」前提でのみ
         # 正しい。統合済み PipelineDetector では無意味（真の値は
         # evaluate_layer_contribution を使う）。既定では出すが __main__ は抑止する。
         if include_layer_contribution and self.layer_contribution:
             lines.append("layer contribution (recall drop if removed):")
-            for name, drop in sorted(self.layer_contribution.items(),
-                                     key=lambda kv: -kv[1]):
+            for name, drop in sorted(self.layer_contribution.items(), key=lambda kv: -kv[1]):
                 lines.append(f"  {name:12s} -{drop:.4f}")
         if self.false_negatives:
             lines.append(f"false negatives ({len(self.false_negatives)}):")
@@ -290,8 +281,7 @@ def _run_cli() -> None:
 
     ap = argparse.ArgumentParser(description="実パイプラインの eval を表示")
     ap.add_argument("--ner", action="store_true", help="NER 層を有効化して評価")
-    ap.add_argument("--address", action="store_true",
-                    help="住所層（P7）を有効化して評価")
+    ap.add_argument("--address", action="store_true", help="住所層（P7）を有効化して評価")
     ap.add_argument(
         "--clients",
         default=str(GOLDEN_DIR / "clients_test.csv"),
@@ -304,14 +294,15 @@ def _run_cli() -> None:
 
     def factory(disabled: str | None = None):
         return make_pipeline(
-            cfg, args.clients, disabled=disabled,
-            use_ner=args.ner, use_address=args.address,
+            cfg,
+            args.clients,
+            disabled=disabled,
+            use_ner=args.ner,
+            use_address=args.address,
         )
 
     layer_names = (
-        ALL_LAYER_NAMES
-        + (("address",) if args.address else ())
-        + (("ner",) if args.ner else ())
+        ALL_LAYER_NAMES + (("address",) if args.address else ()) + (("ner",) if args.ner else ())
     )
     full, contrib = evaluate_layer_contribution(corpus, factory, layer_names)
 
@@ -329,4 +320,3 @@ def _run_cli() -> None:
 
 if __name__ == "__main__":
     _run_cli()
-

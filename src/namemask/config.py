@@ -30,9 +30,11 @@ class Config:
 
     @property
     def person_stopwords(self) -> list[str]:
-        return list(self.section("structural").get(
-            "person_stopwords", ["皆", "みな", "お客", "客", "奥", "各位"]
-        ))
+        return list(
+            self.section("structural").get(
+                "person_stopwords", ["皆", "みな", "お客", "客", "奥", "各位"]
+            )
+        )
 
     @property
     def org_name_max_len(self) -> int:

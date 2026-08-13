@@ -82,6 +82,7 @@ def test_empty() -> None:
 
 # ---- ORG コア名伝播（2026-07 P7後レビュー修正 1）----
 
+
 def test_core_name_propagation_for_structural_org() -> None:
     # 辞書外の取引先: 「株式会社◯◯ … ◯◯」の法人格なし再言及を伝播で拾う。
     text = "株式会社アオゾラ商事の件で打合せ。アオゾラ商事の担当者は不在。"
@@ -120,7 +121,7 @@ def test_propagation_matches_fullwidth_variant_via_shadow() -> None:
     fw = text.find("ＡＣＭＥ")
     hit = [s for s in merged if s.start == fw]
     assert hit, f"full-width variant not propagated: {merged}"
-    assert text[hit[0].start:hit[0].end] == "ＡＣＭＥ"
+    assert text[hit[0].start : hit[0].end] == "ＡＣＭＥ"
     assert hit[0].type == EntityType.ORGANIZATION
     assert "propagation" in hit[0].sources
 

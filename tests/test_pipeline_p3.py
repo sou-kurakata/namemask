@@ -16,7 +16,11 @@ REGEX_TYPES = (EntityType.EMAIL, EntityType.PHONE, EntityType.MYNUMBER)
 LEGAL_CATEGORIES = {"org-prefix", "org-suffix", "org-abbr", "org-glyph", "org-fullwidth"}
 DICT_CATEGORIES = {"org-core", "dict-variant"}
 TRAP_CATEGORIES = {
-    "trap-person", "trap-org", "trap-loc", "mynumber-invalid", "trap-role",
+    "trap-person",
+    "trap-org",
+    "trap-loc",
+    "mynumber-invalid",
+    "trap-role",
     "trap-phone",
 }
 
@@ -81,9 +85,9 @@ def test_compound_trap_no_overmask(corpus: list[Case], pipeline) -> None:
         assert second != -1, f"[{case.id}] test setup: needs 2 occurrences"
         spans = pipeline.detect(case.text)
         # 2つ目の出現位置はどのスパンにも覆われない
-        assert all(
-            not (s.start <= second < s.end) for s in spans
-        ), f"[{case.id}] propagated into compound word at {second}"
+        assert all(not (s.start <= second < s.end) for s in spans), (
+            f"[{case.id}] propagated into compound word at {second}"
+        )
 
 
 def test_layer_contribution_ablation(corpus: list[Case], clients_csv: str) -> None:
@@ -121,6 +125,5 @@ def test_traps_produce_no_detection(corpus: list[Case], pipeline) -> None:
         if case.category in TRAP_CATEGORIES:
             spans = pipeline.detect(case.text)
             assert spans == [], (
-                f"[{case.id}] unexpected detections: "
-                f"{[case.text[s.start:s.end] for s in spans]}"
+                f"[{case.id}] unexpected detections: {[case.text[s.start : s.end] for s in spans]}"
             )

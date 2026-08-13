@@ -34,12 +34,21 @@ class FakeClient:
 
 # ---- エンドポイントのループバック強制（§9・生テキスト外部送信の防止）----
 
+
 def test_is_loopback_endpoint() -> None:
-    for ok in ["http://localhost:11434", "http://127.0.0.1:11434",
-               "http://127.0.0.5", "http://[::1]:11434"]:
+    for ok in [
+        "http://localhost:11434",
+        "http://127.0.0.1:11434",
+        "http://127.0.0.5",
+        "http://[::1]:11434",
+    ]:
         assert _is_loopback_endpoint(ok), ok
-    for bad in ["http://evil.example.com:11434", "http://10.0.0.5:11434",
-                "http://169.254.1.1", "https://api.openai.com"]:
+    for bad in [
+        "http://evil.example.com:11434",
+        "http://10.0.0.5:11434",
+        "http://169.254.1.1",
+        "https://api.openai.com",
+    ]:
         assert not _is_loopback_endpoint(bad), bad
 
 
@@ -52,8 +61,7 @@ def test_ollama_client_rejects_remote_by_default() -> None:
 
 def test_ollama_client_allow_remote_override() -> None:
     # 明示的に許可した場合のみ非ループバックを受け付ける。
-    OllamaClient(endpoint="http://10.0.0.5:11434", model="m", timeout=5,
-                 allow_remote=True)
+    OllamaClient(endpoint="http://10.0.0.5:11434", model="m", timeout=5, allow_remote=True)
 
 
 def test_from_config_rejects_remote_endpoint() -> None:
@@ -61,8 +69,7 @@ def test_from_config_rejects_remote_endpoint() -> None:
     with pytest.raises(ValueError):
         LlmVerifier.from_config(cfg)
     # allow_remote: true なら許可
-    cfg2 = Config(raw={"llm": {"endpoint": "http://evil.example.com:11434",
-                               "allow_remote": True}})
+    cfg2 = Config(raw={"llm": {"endpoint": "http://evil.example.com:11434", "allow_remote": True}})
     LlmVerifier.from_config(cfg2)
 
 
@@ -76,7 +83,7 @@ def test_chunks_preserve_text_and_offsets() -> None:
     chunks = v._chunks(text)
     assert "".join(c for c, _ in chunks) == text
     for chunk, offset in chunks:
-        assert text[offset:offset + len(chunk)] == chunk
+        assert text[offset : offset + len(chunk)] == chunk
 
 
 def test_verify_adds_span_for_present_entity() -> None:
@@ -86,7 +93,7 @@ def test_verify_adds_span_for_present_entity() -> None:
     assert len(spans) == 1
     s = spans[0]
     assert s.type == EntityType.ORGANIZATION
-    assert text[s.start:s.end] == "オリオン企画"
+    assert text[s.start : s.end] == "オリオン企画"
     assert s.sources == ("llm",)
 
 
@@ -110,21 +117,29 @@ def test_verify_no_client_returns_empty() -> None:
 
 def test_verify_type_mapping_person_and_default_org() -> None:
     text = "山本ソフィアと未来案件について話した。"
-    v = LlmVerifier(client=FakeClient([
-        {"text": "山本ソフィア", "type": "人物"},
-        {"text": "未来案件", "type": "案件"},   # 非人物 → ORGANIZATION に寄せる
-    ]))
-    got = {(s.type, text[s.start:s.end]) for s in v.verify(text, [])}
+    v = LlmVerifier(
+        client=FakeClient(
+            [
+                {"text": "山本ソフィア", "type": "人物"},
+                {"text": "未来案件", "type": "案件"},  # 非人物 → ORGANIZATION に寄せる
+            ]
+        )
+    )
+    got = {(s.type, text[s.start : s.end]) for s in v.verify(text, [])}
     assert (EntityType.PERSON, "山本ソフィア") in got
     assert (EntityType.ORGANIZATION, "未来案件") in got
 
 
 def test_verify_length_guards() -> None:
     text = "Aと" + "超" * 50 + "社について。"
-    v = LlmVerifier(client=FakeClient([
-        {"text": "A", "type": "ORGANIZATION"},          # 短すぎ → 捨てる
-        {"text": "超" * 50, "type": "ORGANIZATION"},     # 長すぎ → 捨てる
-    ]))
+    v = LlmVerifier(
+        client=FakeClient(
+            [
+                {"text": "A", "type": "ORGANIZATION"},  # 短すぎ → 捨てる
+                {"text": "超" * 50, "type": "ORGANIZATION"},  # 長すぎ → 捨てる
+            ]
+        )
+    )
     assert v.verify(text, []) == []
 
 
@@ -133,4 +148,4 @@ def test_verify_finds_all_occurrences() -> None:
     v = LlmVerifier(client=FakeClient([{"text": "オリオン企画", "type": "ORGANIZATION"}]))
     spans = v.verify(text, [])
     assert len(spans) == 2
-    assert all(text[s.start:s.end] == "オリオン企画" for s in spans)
+    assert all(text[s.start : s.end] == "オリオン企画" for s in spans)

@@ -28,6 +28,7 @@ def _nfkc_each(s: str) -> str:
 
 # ---- charmap の基本性質 ----
 
+
 def test_charmap_basic_invariants() -> None:
     for text in ["", "abc", "㈱アオヤマ商事", "０３－１２３４", "ｉｎｆｏ＠ｅｘ．ｃｏｍ"]:
         norm = normalize(text)
@@ -53,6 +54,7 @@ def test_fullwidth_digits_map_one_to_one() -> None:
 
 # ---- スパン逆変換 ----
 
+
 def test_map_span_within_expansion_covers_whole_source_char() -> None:
     norm = normalize("A㈱B")  # shadow = "A(株)B", charmap=(0,1,1,1,2)
     assert norm.shadow == "A(株)B"
@@ -71,6 +73,7 @@ def test_map_span_multichar_expansion_full() -> None:
 
 
 # ---- eval 確認: 全角/㈱ ケースが正規化で検出可能になる ----
+
 
 def test_fullwidth_cases_become_detectable_via_normalization(corpus: list[Case]) -> None:
     """P2 完了条件（§11）: 正規化しないと素通りする全角系が、影テキスト上で
@@ -98,7 +101,7 @@ def test_fullwidth_cases_become_detectable_via_normalization(corpus: list[Case])
             s = norm.shadow.index(query)
             span = norm.map_span(Span(s, s + len(query), ent.type))
             assert case.text[span.start : span.end] == ent.surface, (
-                f"[{case.id}] span mapped back to {case.text[span.start:span.end]!r}, "
+                f"[{case.id}] span mapped back to {case.text[span.start : span.end]!r}, "
                 f"expected {ent.surface!r}"
             )
     # 全角系ケースが実際に存在し、検査が空回りしていないこと
@@ -129,6 +132,7 @@ def test_normalized_detection_roundtrips(corpus: list[Case]) -> None:
 
 # ---- NormalizingDetector アダプタ ----
 
+
 def test_normalizing_detector_adapter() -> None:
     """影テキスト検出器を原文座標検出器に昇格できる。"""
 
@@ -137,6 +141,7 @@ def test_normalizing_detector_adapter() -> None:
 
         def detect_shadow(self, shadow: str) -> list[Span]:
             import re
+
             return [
                 Span(m.start(), m.end(), "PHONE", sources=(self.name,))
                 for m in re.finditer(r"\d{2,}", shadow)
@@ -151,6 +156,7 @@ def test_normalizing_detector_adapter() -> None:
 
 # ---- fold_for_dict の対称性 ----
 
+
 def test_fold_for_dict_symmetry_hyphen_and_space() -> None:
     # 本文側の全角/ハイフン種/空白の揺れが、キー側の素直な表記と一致する
     assert fold_for_dict("０３ー１２３４−５６７８") == fold_for_dict("03-1234-5678")
@@ -159,6 +165,7 @@ def test_fold_for_dict_symmetry_hyphen_and_space() -> None:
 
 
 # ---- fold 影テキスト（ADR-007）----
+
 
 def test_fold_normalize_charmap_maps_back_over_removed_space() -> None:
     # 空白は消え、ハイフン類は '-' に。charmap は原文座標へ正しく戻る。

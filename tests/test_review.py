@@ -11,8 +11,9 @@ def _result(original_surface: str = "アオヤマ商事") -> MaskResult:
         masked_text="[[組織_1]]の[[人名_1]]です",
         mapping={"[[組織_1]]": original_surface, "[[人名_1]]": "山田"},
         report=[
-            ReportItem(original_surface, "[[組織_1]]", EntityType.ORGANIZATION,
-                       ("denylist", "structural")),
+            ReportItem(
+                original_surface, "[[組織_1]]", EntityType.ORGANIZATION, ("denylist", "structural")
+            ),
             ReportItem("山田", "[[人名_1]]", EntityType.PERSON, ("structural",)),
         ],
     )
@@ -20,10 +21,10 @@ def _result(original_surface: str = "アオヤマ商事") -> MaskResult:
 
 def test_html_contains_masked_marks_and_report() -> None:
     html = render_review_html("株式会社アオヤマ商事の山田です", _result())
-    assert "<mark" in html                 # マスク箇所ハイライト
+    assert "<mark" in html  # マスク箇所ハイライト
     assert "[[組織_1]]" in html
-    assert "検出根拠" in html               # レポート表
-    assert "denylist,structural" in html    # sources 表示
+    assert "検出根拠" in html  # レポート表
+    assert "denylist,structural" in html  # sources 表示
     assert "組織" in html and "人名" in html  # 日本語ラベル
 
 

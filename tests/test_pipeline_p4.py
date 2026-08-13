@@ -41,9 +41,7 @@ def reports(corpus: list[Case], pipelines):
 
 def test_ner_improves_recall(reports) -> None:
     off_rep, on_rep = reports
-    assert on_rep.recall > off_rep.recall, (
-        f"NER off={off_rep.recall:.4f} on={on_rep.recall:.4f}"
-    )
+    assert on_rep.recall > off_rep.recall, f"NER off={off_rep.recall:.4f} on={on_rep.recall:.4f}"
 
 
 def test_overall_recall_meets_target(reports) -> None:
@@ -54,6 +52,7 @@ def test_overall_recall_meets_target(reports) -> None:
 
 def test_person_recall_improves(reports) -> None:
     from namemask.types import EntityType
+
     off_rep, on_rep = reports
     assert on_rep.type_recall(EntityType.PERSON) > off_rep.type_recall(EntityType.PERSON)
 

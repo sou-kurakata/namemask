@@ -36,9 +36,7 @@ class MappingStore:
     def mapping(self) -> dict[str, str]:
         return dict(self._mapping)
 
-    def save(
-        self, path: Path | str | None = None, passphrase: str | None = None
-    ) -> Path:
+    def save(self, path: Path | str | None = None, passphrase: str | None = None) -> Path:
         """`app_data_dir()/.session/mapping.json`（既定）へ書き出す。呼ばれた時のみ。
 
         passphrase を渡すと AES 認証暗号（Scrypt 鍵導出）で保存する。
@@ -71,9 +69,7 @@ class MappingStore:
         return target
 
     @classmethod
-    def load(
-        cls, path: Path | str | None = None, passphrase: str | None = None
-    ) -> MappingStore:
+    def load(cls, path: Path | str | None = None, passphrase: str | None = None) -> MappingStore:
         """mapping を読み込む。暗号化ファイルなら passphrase で復号する。"""
         target = Path(path) if path is not None else _default_file()
         text = target.read_text(encoding="utf-8")

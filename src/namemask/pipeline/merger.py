@@ -57,8 +57,13 @@ def _expand_org_boundaries(text: str, spans: list[Span]) -> list[Span]:
                 new_start = min(new_start, s.start - len(lf))
         if (new_start, new_end) != (s.start, s.end):
             extra.append(
-                Span(new_start, new_end, s.type, score=s.score,
-                     sources=(*tuple(s.sources), "boundary"))
+                Span(
+                    new_start,
+                    new_end,
+                    s.type,
+                    score=s.score,
+                    sources=(*tuple(s.sources), "boundary"),
+                )
             )
     return spans + extra
 
@@ -84,12 +89,9 @@ def _merge_overlaps(spans: list[Span]) -> list[Span]:
         end = max(c.end for c in cluster)
         # 型解決: 優先度（辞書>構造>正規表現>NER）→ 同点はより長いスパン。
         winner = max(cluster, key=lambda c: (_span_priority(c), c.end - c.start))
-        sources: tuple[str, ...] = tuple(
-            dict.fromkeys(src for c in cluster for src in c.sources)
-        )
+        sources: tuple[str, ...] = tuple(dict.fromkeys(src for c in cluster for src in c.sources))
         merged.append(
-            Span(start, end, winner.type,
-                 score=max(c.score for c in cluster), sources=sources)
+            Span(start, end, winner.type, score=max(c.score for c in cluster), sources=sources)
         )
     return merged
 
@@ -141,9 +143,7 @@ def _propagate_same_surface(text: str, spans: list[Span]) -> list[Span]:
     for s in spans:
         for i in range(s.start, s.end):
             covered_orig[i] = 1
-    covered_shadow = bytearray(
-        covered_orig[norm.charmap[j]] for j in range(len(shadow))
-    )
+    covered_shadow = bytearray(covered_orig[norm.charmap[j]] for j in range(len(shadow)))
 
     # 候補表記を影形へ正規化してから、長い順に伝播（部分表記の暴発を抑える）。
     norm_cands: list[tuple[str, str, float, tuple[str, ...]]] = []
@@ -176,8 +176,7 @@ def _propagate_same_surface(text: str, spans: list[Span]) -> list[Span]:
                 for j in range(idx, end):
                     covered_shadow[j] = 1
                 additions.append(
-                    Span(o_start, o_end, typ, score=score,
-                         sources=(*sources, "propagation"))
+                    Span(o_start, o_end, typ, score=score, sources=(*sources, "propagation"))
                 )
             idx = shadow.find(q, idx + 1)
     return spans + additions

@@ -14,11 +14,11 @@ from namemask.types import EntityType
 def test_expand_variants_core_and_forms() -> None:
     row = ClientRow("株式会社アオヤマ商事", EntityType.ORGANIZATION, ["アオヤマ"])
     v = expand_variants(row, min_core_len=3)
-    assert "株式会社アオヤマ商事" in v      # 原表記
-    assert "アオヤマ商事" in v              # コア名
-    assert "アオヤマ商事株式会社" in v      # 後置
-    assert "(株)アオヤマ商事" in v          # 別法人格前置
-    assert "アオヤマ" in v                  # alias
+    assert "株式会社アオヤマ商事" in v  # 原表記
+    assert "アオヤマ商事" in v  # コア名
+    assert "アオヤマ商事株式会社" in v  # 後置
+    assert "(株)アオヤマ商事" in v  # 別法人格前置
+    assert "アオヤマ" in v  # alias
 
 
 def test_expand_variants_short_core_not_registered_alone() -> None:
@@ -66,9 +66,9 @@ def test_denylist_hyphen_and_space_variants_via_fold() -> None:
     rows = [ClientRow("株式会社スカイーテック", EntityType.ORGANIZATION, ["スカイテック"])]
     det = FoldNormalizingDetector(DenylistDetector(rows, min_core_len=3))
     for text, surface in [
-        ("スカイ−テックへ発注", "スカイ−テック"),      # U+2212 マイナス
-        ("スカイ‐テックと契約", "スカイ‐テック"),      # U+2010 ハイフン
-        ("スカイ テックに連絡", "スカイ テック"),        # 半角空白（alias 経由）
+        ("スカイ−テックへ発注", "スカイ−テック"),  # U+2212 マイナス
+        ("スカイ‐テックと契約", "スカイ‐テック"),  # U+2010 ハイフン
+        ("スカイ テックに連絡", "スカイ テック"),  # 半角空白（alias 経由）
     ]:
         got = [text[s.start : s.end] for s in det.detect(text)]
         assert surface in got, (text, got)

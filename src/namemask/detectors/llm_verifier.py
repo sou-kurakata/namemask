@@ -75,13 +75,15 @@ class OllamaClient:
 
         失敗時は例外を送出（呼び出し側が fail-safe に握りつぶす）。
         """
-        body = json.dumps({
-            "model": self._model,
-            "prompt": prompt,
-            "stream": False,
-            "format": "json",          # JSON 出力を強制
-            "options": {"temperature": 0},
-        }).encode("utf-8")
+        body = json.dumps(
+            {
+                "model": self._model,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json",  # JSON 出力を強制
+                "options": {"temperature": 0},
+            }
+        ).encode("utf-8")
         req = urllib.request.Request(
             self._url, data=body, headers={"Content-Type": "application/json"}
         )
@@ -91,16 +93,16 @@ class OllamaClient:
 
 
 _FEWSHOT = (
-    '例1（追加あり）:\n'
-    '本文: 「先日オリオン企画と打ち合わせました。」\n'
-    'すでにマスク済み: []\n'
+    "例1（追加あり）:\n"
+    "本文: 「先日オリオン企画と打ち合わせました。」\n"
+    "すでにマスク済み: []\n"
     '出力: {"additions":[{"text":"オリオン企画","type":"ORGANIZATION"}]}\n\n'
-    '例2（追加なし=空配列）:\n'
-    '本文: 「本日は晴天なり。会議は延期します。」\n'
-    'すでにマスク済み: []\n'
+    "例2（追加なし=空配列）:\n"
+    "本文: 「本日は晴天なり。会議は延期します。」\n"
+    "すでにマスク済み: []\n"
     '出力: {"additions":[]}\n\n'
-    '例3（既存に触れない）:\n'
-    '本文: 「[[組織_1]]の宮本さんから連絡がありました。」\n'
+    "例3（既存に触れない）:\n"
+    "本文: 「[[組織_1]]の宮本さんから連絡がありました。」\n"
     'すでにマスク済み: ["宮本"]\n'
     '出力: {"additions":[]}\n\n'
 )
@@ -118,8 +120,12 @@ def _build_prompt(chunk: str, existing: list[str]) -> str:
         "- 本文に一字一句存在する語だけを返す（存在しない語を作らない）。\n"
         "- 既存マスクの解除・変更はしない。\n\n"
         + _FEWSHOT
-        + "本文: 「" + chunk + "」\n"
-        + "すでにマスク済み: " + existing_json + "\n"
+        + "本文: 「"
+        + chunk
+        + "」\n"
+        + "すでにマスク済み: "
+        + existing_json
+        + "\n"
         + "出力:"
     )
 
@@ -191,11 +197,9 @@ class LlmVerifier:
         additions: list[Span] = []
         for chunk, offset in self._chunks(text):
             end = offset + len(chunk)
-            existing = sorted({
-                text[s.start:s.end]
-                for s in existing_spans
-                if s.start < end and offset < s.end
-            })
+            existing = sorted(
+                {text[s.start : s.end] for s in existing_spans if s.start < end and offset < s.end}
+            )
             prompt = _build_prompt(chunk, existing)
             try:
                 raw = self._client.generate(prompt)
@@ -226,9 +230,6 @@ class LlmVerifier:
             idx = chunk.find(surface)
             while idx != -1:
                 start = offset + idx
-                out.append(
-                    Span(start, start + len(surface), typ,
-                         score=0.4, sources=(self.name,))
-                )
+                out.append(Span(start, start + len(surface), typ, score=0.4, sources=(self.name,)))
                 idx = chunk.find(surface, idx + 1)
         return out

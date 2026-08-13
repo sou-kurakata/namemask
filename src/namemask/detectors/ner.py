@@ -109,9 +109,7 @@ class NerDetector:
                 continue
             start, end = self._trim(text, ent.start_char, ent.end_char)
             if end > start:
-                spans.append(
-                    Span(start, end, typ, score=self._score, sources=(self.name,))
-                )
+                spans.append(Span(start, end, typ, score=self._score, sources=(self.name,)))
         return spans
 
     @staticmethod

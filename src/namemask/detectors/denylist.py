@@ -56,8 +56,8 @@ def expand_variants(row: ClientRow, min_core_len: int) -> set[str]:
     if lf and core:
         # 法人格付き別表記（前置・後置＋代表法人格）。
         for legal in _CANONICAL_LEGAL:
-            variants.add(legal + core)   # 前置
-            variants.add(core + legal)   # 後置
+            variants.add(legal + core)  # 前置
+            variants.add(core + legal)  # 後置
         # コア名単体は2文字以下だと誤マッチ多発のため登録しない。
         if len(core) >= min_core_len:
             variants.add(core)
@@ -105,7 +105,5 @@ class DenylistDetector:
         spans: list[Span] = []
         for end_idx, (key, typ) in self._automaton.iter(shadow):
             start = end_idx - len(key) + 1
-            spans.append(
-                Span(start, end_idx + 1, typ, score=1.0, sources=(self.name,))
-            )
+            spans.append(Span(start, end_idx + 1, typ, score=1.0, sources=(self.name,)))
         return spans
