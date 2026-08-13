@@ -269,10 +269,77 @@ def make_ideal_detector(cases: list[Case]) -> Detector:
     return _Ideal()
 
 
+# --- 受け入れ基準（CLAUDE.md §6 の表）------------------------------------
+#
+# **ここが閾値の単一の真実の源。** テスト（tests/test_pipeline_p3.py）も CI の
+# eval ジョブも、この定数を参照する。数値を下げる変更を入れないこと。
+#
+# 表のうち round-trip 完全一致・同一表記の文書内一貫性は、スパン集合ではなく
+# 置換/復元の性質なので eval では測らない（tests/test_golden.py が担保する）。
+
+#: 法人格を含む組織名のケース分類（≥98% を要求する対象）。
+LEGAL_FORM_CATEGORIES = frozenset(
+    {"org-prefix", "org-suffix", "org-abbr", "org-glyph", "org-fullwidth"}
+)
+#: 辞書登録済み取引先のケース分類（100% を要求する対象）。
+DICTIONARY_CATEGORIES = frozenset({"org-core", "dict-variant"})
+#: 正規表現層が 100% を要求される型。
+REGEX_TYPES = ("EMAIL", "PHONE", "MYNUMBER")
+
+MIN_OVERALL_RECALL = 0.95
+MIN_OVERALL_PRECISION = 0.70
+MIN_LEGAL_FORM_ORG_RECALL = 0.98
+MIN_DICTIONARY_RECALL = 1.0
+MIN_REGEX_RECALL = 1.0
+
+
+@dataclass
+class ThresholdCheck:
+    name: str
+    measured: float
+    threshold: float
+
+    @property
+    def ok(self) -> bool:
+        return self.measured >= self.threshold
+
+    def line(self) -> str:
+        mark = "OK  " if self.ok else "FAIL"
+        return f"  [{mark}] {self.name:34s} {self.measured:.4f} >= {self.threshold:.4f}"
+
+
+def check_thresholds(
+    cases: list[Case], report: EvalReport, detector: Detector
+) -> list[ThresholdCheck]:
+    """受け入れ基準を実測値と突き合わせる。判定は呼び出し側（ok の全 and）。"""
+    checks = [
+        ThresholdCheck("overall recall (partial)", report.recall, MIN_OVERALL_RECALL),
+        ThresholdCheck("overall precision", report.precision, MIN_OVERALL_PRECISION),
+    ]
+    for t in REGEX_TYPES:
+        checks.append(
+            ThresholdCheck(f"recall {t.lower()}", report.type_recall(t), MIN_REGEX_RECALL)
+        )
+
+    subsets = (
+        ("recall dictionary clients", DICTIONARY_CATEGORIES, MIN_DICTIONARY_RECALL),
+        ("recall org with legal form", LEGAL_FORM_CATEGORIES, MIN_LEGAL_FORM_ORG_RECALL),
+    )
+    for name, categories, threshold in subsets:
+        subset = [c for c in cases if c.category in categories]
+        if not subset:
+            # 分類が消えたのに気付かず「該当0件だから合格」になるのを防ぐ。
+            checks.append(ThresholdCheck(f"{name} (no cases!)", 0.0, threshold))
+            continue
+        sub_report = evaluate(subset, [detector])
+        checks.append(ThresholdCheck(name, sub_report.type_recall("ORGANIZATION"), threshold))
+    return checks
+
+
 def _run_cli() -> None:
     """実パイプラインの実測と真のアブレーション（層別 recall 寄与）を表示する。
 
-    使い方: python tests/eval.py [--ner]
+    使い方: python tests/eval.py [--ner] [--address] [--assert-thresholds]
     """
     import argparse
 
@@ -286,6 +353,11 @@ def _run_cli() -> None:
         "--clients",
         default=str(GOLDEN_DIR / "clients_test.csv"),
         help="取引先マスタ CSV",
+    )
+    ap.add_argument(
+        "--assert-thresholds",
+        action="store_true",
+        help="受け入れ基準（CLAUDE.md §6）を検査し、下回ったら非ゼロ終了する（CI ゲート）",
     )
     args = ap.parse_args()
 
@@ -316,6 +388,18 @@ def _run_cli() -> None:
     print("\n=== 真のアブレーション: 層を外した時の recall 低下 ===")
     for name, drop in sorted(contrib.items(), key=lambda kv: -kv[1]):
         print(f"  {name:12s} -{drop:.4f}")
+
+    if args.assert_thresholds:
+        checks = check_thresholds(corpus, full, factory(None))
+        print("\n=== 受け入れ基準（CLAUDE.md §6）===")
+        for c in checks:
+            print(c.line())
+        failed = [c for c in checks if not c.ok]
+        if failed:
+            names = ", ".join(c.name for c in failed)
+            print(f"\n閾値を下回りました: {names}", file=sys.stderr)
+            raise SystemExit(1)
+        print("\nすべての閾値を満たしています。")
 
 
 if __name__ == "__main__":

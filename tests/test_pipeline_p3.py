@@ -8,13 +8,22 @@ from __future__ import annotations
 
 import pytest
 
-from eval import Case, evaluate
+from eval import (
+    DICTIONARY_CATEGORIES,
+    LEGAL_FORM_CATEGORIES,
+    MIN_DICTIONARY_RECALL,
+    MIN_LEGAL_FORM_ORG_RECALL,
+    MIN_OVERALL_PRECISION,
+    MIN_REGEX_RECALL,
+    REGEX_TYPES,
+    Case,
+    evaluate,
+)
 from namemask.core import mask, unmask
 from namemask.types import EntityType
 
-REGEX_TYPES = (EntityType.EMAIL, EntityType.PHONE, EntityType.MYNUMBER)
-LEGAL_CATEGORIES = {"org-prefix", "org-suffix", "org-abbr", "org-glyph", "org-fullwidth"}
-DICT_CATEGORIES = {"org-core", "dict-variant"}
+# 閾値と対象分類は eval.py が単一の真実の源（CLAUDE.md §6）。
+# CI の eval ゲートと同じ数値をここでも使う——2箇所に書くと必ず食い違う。
 TRAP_CATEGORIES = {
     "trap-person",
     "trap-org",
@@ -32,25 +41,25 @@ def report(corpus: list[Case], pipeline):
 
 def test_regex_types_recall_100(report) -> None:
     for t in REGEX_TYPES:
-        assert report.type_recall(t) == 1.0, (
+        assert report.type_recall(t) >= MIN_REGEX_RECALL, (
             f"{t} recall={report.type_recall(t)}\n{report.summary()}"
         )
 
 
 def test_dictionary_clients_recall_100(corpus: list[Case], pipeline) -> None:
-    subset = [c for c in corpus if c.category in DICT_CATEGORIES]
+    subset = [c for c in corpus if c.category in DICTIONARY_CATEGORIES]
     rep = evaluate(subset, [pipeline])
-    assert rep.type_recall(EntityType.ORGANIZATION) == 1.0, rep.summary()
+    assert rep.type_recall(EntityType.ORGANIZATION) >= MIN_DICTIONARY_RECALL, rep.summary()
 
 
 def test_legal_form_org_recall_98(corpus: list[Case], pipeline) -> None:
-    subset = [c for c in corpus if c.category in LEGAL_CATEGORIES]
+    subset = [c for c in corpus if c.category in LEGAL_FORM_CATEGORIES]
     rep = evaluate(subset, [pipeline])
-    assert rep.type_recall(EntityType.ORGANIZATION) >= 0.98, rep.summary()
+    assert rep.type_recall(EntityType.ORGANIZATION) >= MIN_LEGAL_FORM_ORG_RECALL, rep.summary()
 
 
 def test_precision_floor(report) -> None:
-    assert report.precision >= 0.70, report.summary()
+    assert report.precision >= MIN_OVERALL_PRECISION, report.summary()
 
 
 def test_no_false_positives(report) -> None:

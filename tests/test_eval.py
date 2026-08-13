@@ -7,7 +7,13 @@
 
 from __future__ import annotations
 
-from eval import Case, evaluate, load_corpus, make_ideal_detector
+from eval import (
+    Case,
+    check_thresholds,
+    evaluate,
+    load_corpus,
+    make_ideal_detector,
+)
 from namemask.types import Entity, EntityType, Span
 
 P = EntityType.PERSON
@@ -70,6 +76,39 @@ def test_eval_empty_detectors_zero_recall() -> None:
     assert rep.pred_total == 0
     # 誤検出はゼロなので precision は定義上 1.0（分母0）
     assert rep.precision == 1.0
+
+
+def test_threshold_gate_passes_for_real_pipeline(corpus, pipeline) -> None:
+    """CI の eval ゲートと同じ判定をローカルでも回す（CLAUDE.md §6）。"""
+    report = evaluate(corpus, [pipeline])
+    checks = check_thresholds(corpus, report, pipeline)
+    failed = [c.name for c in checks if not c.ok]
+    assert not failed, f"閾値を下回っています: {failed}\n{report.summary()}"
+
+
+def test_threshold_gate_actually_fails_when_recall_drops(corpus) -> None:
+    """**ゲートが実際に噛むこと**を証明する。
+
+    「常に緑のゲート」は無いのと同じ（CI では tee がこれを起こしていた）。
+    辞書層を外したパイプラインなら、辞書ケースの recall が 1.0 を割るはず。
+    """
+    from namemask.config import Config
+    from namemask.pipeline.build import make_pipeline
+
+    degraded = make_pipeline(Config(), clients_csv=None, disabled="denylist")
+    report = evaluate(corpus, [degraded])
+    checks = check_thresholds(corpus, report, degraded)
+    failed = {c.name for c in checks if not c.ok}
+    assert "recall dictionary clients" in failed, [c.line() for c in checks]
+
+
+def test_threshold_gate_does_not_pass_vacuously_on_empty_subset() -> None:
+    """分類が消えて対象0件になったとき、黙って合格しないこと。"""
+    empty = [Case(id="x", category="no-such-category", text="あ", entities=[])]
+    report = evaluate(empty, [])
+    checks = check_thresholds(empty, report, _FakeDetector())
+    vacuous = [c for c in checks if "no cases" in c.name]
+    assert vacuous and all(not c.ok for c in vacuous)
 
 
 def test_harness_reports_perfect_for_ideal_detector() -> None:
