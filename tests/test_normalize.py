@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import unicodedata
+from itertools import pairwise
 
 from hypothesis import given, settings
 from hypothesis import strategies as st
@@ -32,7 +33,7 @@ def test_charmap_basic_invariants() -> None:
         norm = normalize(text)
         assert len(norm.charmap) == len(norm.shadow)
         # 非減少
-        assert all(a <= b for a, b in zip(norm.charmap, norm.charmap[1:]))
+        assert all(a <= b for a, b in pairwise(norm.charmap))
         # 範囲内
         assert all(0 <= i < max(1, len(text)) for i in norm.charmap) or text == ""
 

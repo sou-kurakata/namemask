@@ -157,7 +157,7 @@ class LlmVerifier:
         self._enabled = set(enabled_types)
 
     @classmethod
-    def from_config(cls, config: Config, client: OllamaClient | None = None) -> "LlmVerifier":
+    def from_config(cls, config: Config, client: OllamaClient | None = None) -> LlmVerifier:
         if client is None:
             # ループバック強制はここで効く（config.yaml に任意 URL を書いても
             # allow_remote: true が無い限り例外になる）。

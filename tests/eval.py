@@ -22,9 +22,10 @@ _SRC = Path(__file__).resolve().parent.parent / "src"
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 
-from namemask.detectors.base import Detector
-from namemask.detectors.stub import GoldenStubDetector
-from namemask.types import ALL_TYPES, Entity, Span
+# 上の sys.path 追加より後に import する必要がある（E402 は意図的）。
+from namemask.detectors.base import Detector  # noqa: E402
+from namemask.detectors.stub import GoldenStubDetector  # noqa: E402
+from namemask.types import ALL_TYPES, Entity, Span  # noqa: E402
 
 GOLDEN_DIR = Path(__file__).with_name("golden")
 CORPUS_PATH = GOLDEN_DIR / "corpus.json"
@@ -198,14 +199,15 @@ def evaluate(cases: list[Case], detectors: list[Detector]) -> EvalReport:
         exact_hits += sum(e_hits)
         tp_precision += sum(p_hits)
 
-        for g, hit in zip(gold, r_hits):
+        # _recall_hits / _precision_hits は入力と同じ長さのリストを返す（strict で担保）。
+        for g, hit in zip(gold, r_hits, strict=True):
             per_type_gold[g.type] += 1
             if hit:
                 per_type_hits[g.type] += 1
             else:
                 false_negatives.append((case.id, g.surface(case.text), g.type))
 
-        for p, hit in zip(pred, p_hits):
+        for p, hit in zip(pred, p_hits, strict=True):
             if not hit:
                 false_positives.append((case.id, p.surface(case.text), p.type))
 

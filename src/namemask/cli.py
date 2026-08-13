@@ -21,17 +21,17 @@ import os
 import sys
 from pathlib import Path
 
-_PASSPHRASE_ENV = "NAMEMASK_PASSPHRASE"
-
-
-def _passphrase() -> str | None:
-    return os.environ.get(_PASSPHRASE_ENV) or None
-
 from namemask import paths
 from namemask.api import mask_text, unmask_text
 from namemask.core.mapping import MappingStore
 from namemask.review import render_review_html
 from namemask.types import TYPE_LABEL_JA, MaskResult
+
+_PASSPHRASE_ENV = "NAMEMASK_PASSPHRASE"
+
+
+def _passphrase() -> str | None:
+    return os.environ.get(_PASSPHRASE_ENV) or None
 
 
 def _configure_std_streams() -> None:

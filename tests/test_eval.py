@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from eval import Case, evaluate, make_ideal_detector, load_corpus
+from eval import Case, evaluate, load_corpus, make_ideal_detector
 from namemask.types import Entity, EntityType, Span
 
 P = EntityType.PERSON

@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import re
 
-
 from namemask.types import RestoreResult
 
 # 正準トークン `[[ラベル_番号]]` を分解する。

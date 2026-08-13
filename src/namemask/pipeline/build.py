@@ -9,8 +9,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from namemask.config import Config, load_config
-from namemask.detectors.base import Detector
 from namemask.detectors.address_ja import AddressDetector
+from namemask.detectors.base import Detector
 from namemask.detectors.denylist import DenylistDetector, load_clients_csv
 from namemask.detectors.llm_verifier import LlmVerifier
 from namemask.detectors.ner import NerDetector
@@ -115,7 +115,7 @@ def make_pipeline(
     use_llm: bool = False,
     use_address: bool = False,
     llm_client=None,
-) -> "PipelineDetector":
+) -> PipelineDetector:
     """層を1つ無効化できるパイプライン工場（eval のアブレーション用）。
 
     disabled に層名（regex/structural/denylist/ner/address/llm）を渡すとその層を除く。

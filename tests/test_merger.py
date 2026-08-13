@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from itertools import pairwise
+
 from namemask.pipeline.merger import merge_spans
 from namemask.types import EntityType, Span
 
 
 def _no_overlaps(spans: list[Span]) -> bool:
     ordered = sorted(spans, key=lambda s: s.start)
-    return all(a.end <= b.start for a, b in zip(ordered, ordered[1:]))
+    return all(a.end <= b.start for a, b in pairwise(ordered))
 
 
 def test_overlap_merge_widest_and_type_priority() -> None:

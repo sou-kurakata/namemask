@@ -11,8 +11,8 @@ import pytest
 
 pytest.importorskip("spacy", reason="spacy/ja_ginza 未導入")
 
-from namemask.detectors.ner import NerDetector  # noqa: E402
-from namemask.types import EntityType  # noqa: E402
+from namemask.detectors.ner import NerDetector
+from namemask.types import EntityType
 
 
 def _load_or_skip() -> NerDetector:

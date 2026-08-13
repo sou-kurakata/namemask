@@ -80,7 +80,7 @@ class Span:
     def surface(self, text: str) -> str:
         return text[self.start : self.end]
 
-    def overlaps(self, other: "Span") -> bool:
+    def overlaps(self, other: Span) -> bool:
         return self.start < other.end and other.start < self.end
 
 

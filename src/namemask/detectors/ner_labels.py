@@ -64,9 +64,9 @@ _LOCATION_LABELS = {
 }
 
 LABEL_MAP: dict[str, str] = {
-    **{lab: EntityType.PERSON for lab in _PERSON_LABELS},
-    **{lab: EntityType.ORGANIZATION for lab in _ORG_LABELS},
-    **{lab: EntityType.LOCATION for lab in _LOCATION_LABELS},
+    **dict.fromkeys(_PERSON_LABELS, EntityType.PERSON),
+    **dict.fromkeys(_ORG_LABELS, EntityType.ORGANIZATION),
+    **dict.fromkeys(_LOCATION_LABELS, EntityType.LOCATION),
 }
 
 

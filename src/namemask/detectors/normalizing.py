@@ -8,7 +8,8 @@
 
 from __future__ import annotations
 
-from typing import Callable, Protocol, runtime_checkable
+from collections.abc import Callable
+from typing import Protocol, runtime_checkable
 
 from namemask.normalize import NormalizedText, fold_normalize, normalize
 from namemask.types import Span

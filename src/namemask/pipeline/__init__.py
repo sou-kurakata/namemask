@@ -14,6 +14,6 @@ __all__ = [
     "PipelineDetector",
     "build_default_pipeline",
     "make_pipeline",
-    "run_pipeline",
     "merge_spans",
+    "run_pipeline",
 ]

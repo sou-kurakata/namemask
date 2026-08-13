@@ -107,7 +107,9 @@ def fold_normalize(text: str) -> NormalizedText:
     base = normalize(text)  # NFKC 影＋charmap を再利用
     parts: list[str] = []
     charmap: list[int] = []
-    for ch, orig_i in zip(base.shadow, base.charmap):
+    # shadow と charmap は normalize() が常に同じ長さで作る。ずれたら座標が壊れて
+    # 検出漏れになるので、黙って切り捨てず strict で落とす。
+    for ch, orig_i in zip(base.shadow, base.charmap, strict=True):
         if ch.isspace():
             continue  # 空白は除去（0 文字対応 = charmap に載せない）
         if ch in _HYPHEN_SET:

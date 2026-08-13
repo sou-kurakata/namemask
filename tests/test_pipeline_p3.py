@@ -88,12 +88,11 @@ def test_compound_trap_no_overmask(corpus: list[Case], pipeline) -> None:
 
 def test_layer_contribution_ablation(corpus: list[Case], clients_csv: str) -> None:
     """P3.5-4: 層別寄与を真のアブレーション（層を抜いて再評価）で測る。"""
+    from eval import evaluate_layer_contribution
     from namemask.config import Config
     from namemask.pipeline.build import ALL_LAYER_NAMES, make_pipeline
 
-    from eval import evaluate_layer_contribution
-
-    full, contrib = evaluate_layer_contribution(
+    _full, contrib = evaluate_layer_contribution(
         corpus,
         lambda d: make_pipeline(Config(), clients_csv, d),
         ALL_LAYER_NAMES,

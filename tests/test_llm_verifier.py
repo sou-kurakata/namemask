@@ -16,7 +16,7 @@ from namemask.detectors.llm_verifier import (
     OllamaClient,
     _is_loopback_endpoint,
 )
-from namemask.types import EntityType, Span
+from namemask.types import EntityType
 
 
 class FakeClient:

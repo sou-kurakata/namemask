@@ -14,7 +14,7 @@ from pathlib import Path
 import ahocorasick
 
 from namemask.config import Config
-from namemask.lexicon import LEGAL_FORMS, strip_legal_form
+from namemask.lexicon import strip_legal_form
 from namemask.normalize import fold_for_dict
 from namemask.types import ALL_TYPES, EntityType, Span
 
@@ -88,7 +88,7 @@ class DenylistDetector:
             self._automaton.make_automaton()
 
     @classmethod
-    def from_config(cls, config: Config) -> "DenylistDetector":
+    def from_config(cls, config: Config) -> DenylistDetector:
         rows: list[ClientRow] = []
         if config.clients_csv and Path(config.clients_csv).exists():
             rows += load_clients_csv(config.clients_csv)

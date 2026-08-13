@@ -11,11 +11,11 @@ import pytest
 
 pytest.importorskip("spacy", reason="spacy/ja_ginza 未導入")
 
-from eval import Case, evaluate  # noqa: E402
-from namemask.config import Config  # noqa: E402
-from namemask.core import mask, unmask  # noqa: E402
-from namemask.detectors.ner import NerDetector  # noqa: E402
-from namemask.pipeline.build import make_pipeline  # noqa: E402
+from eval import Case, evaluate
+from namemask.config import Config
+from namemask.core import mask, unmask
+from namemask.detectors.ner import NerDetector
+from namemask.pipeline.build import make_pipeline
 
 
 def _skip_if_no_model() -> None:

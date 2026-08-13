@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+from itertools import pairwise
+
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
@@ -74,5 +76,5 @@ def test_stub_spans_non_overlapping(data) -> None:
     text, entities = data
     spans = GoldenStubDetector(entities).detect(text)
     ordered = sorted(spans, key=lambda s: s.start)
-    for a, b in zip(ordered, ordered[1:]):
+    for a, b in pairwise(ordered):
         assert a.end <= b.start, f"overlapping spans: {a} {b}"

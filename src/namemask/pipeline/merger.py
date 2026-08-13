@@ -58,7 +58,7 @@ def _expand_org_boundaries(text: str, spans: list[Span]) -> list[Span]:
         if (new_start, new_end) != (s.start, s.end):
             extra.append(
                 Span(new_start, new_end, s.type, score=s.score,
-                     sources=tuple(s.sources) + ("boundary",))
+                     sources=(*tuple(s.sources), "boundary"))
             )
     return spans + extra
 
@@ -177,7 +177,7 @@ def _propagate_same_surface(text: str, spans: list[Span]) -> list[Span]:
                     covered_shadow[j] = 1
                 additions.append(
                     Span(o_start, o_end, typ, score=score,
-                         sources=sources + ("propagation",))
+                         sources=(*sources, "propagation"))
                 )
             idx = shadow.find(q, idx + 1)
     return spans + additions

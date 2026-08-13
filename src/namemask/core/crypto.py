@@ -34,7 +34,7 @@ def _imports():
 
 
 def _derive_key(passphrase: str, salt: bytes) -> bytes:
-    Fernet, _InvalidToken, Scrypt = _imports()
+    _Fernet, _InvalidToken, Scrypt = _imports()
     kdf = Scrypt(salt=salt, length=32, n=_SCRYPT_N, r=_SCRYPT_R, p=_SCRYPT_P)
     return base64.urlsafe_b64encode(kdf.derive(passphrase.encode("utf-8")))
 

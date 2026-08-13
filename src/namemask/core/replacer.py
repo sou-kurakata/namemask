@@ -9,6 +9,8 @@
 
 from __future__ import annotations
 
+from itertools import pairwise
+
 from namemask.core.restorer import _lenient_pattern
 from namemask.types import TYPE_LABEL_JA, MaskResult, ReportItem, Span
 
@@ -30,7 +32,7 @@ def _dedup_and_sort(spans: list[Span]) -> list[Span]:
             uniq.append(s)
 
     ordered = sorted(uniq, key=lambda s: (s.start, s.end))
-    for prev, cur in zip(ordered, ordered[1:]):
+    for prev, cur in pairwise(ordered):
         if cur.start < prev.end:
             raise ValueError(
                 f"overlapping spans passed to replacer: {prev} vs {cur}. "

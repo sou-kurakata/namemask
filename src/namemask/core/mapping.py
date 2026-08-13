@@ -9,6 +9,7 @@ passphrase 指定時は AES 認証暗号で保存する（core/crypto.py）。
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 from pathlib import Path
@@ -53,31 +54,26 @@ class MappingStore:
             content = json.dumps(self._mapping, ensure_ascii=False, indent=2)
 
         target.parent.mkdir(parents=True, exist_ok=True)
-        try:
+        # Windows など chmod が効かない環境でも保存自体は止めない。
+        with contextlib.suppress(OSError):
             os.chmod(target.parent, 0o700)
-        except OSError:
-            pass
         # 既存ファイルの緩いパーミッションを引き継がないよう、作り直してから書く。
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(target)
-        except FileNotFoundError:
-            pass
         # O_CREAT で 0o600 を指定して作成（umask の影響を受けにくい）。
         fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as f:
                 f.write(content)
         finally:
-            try:
+            with contextlib.suppress(OSError):
                 os.chmod(target, 0o600)
-            except OSError:
-                pass
         return target
 
     @classmethod
     def load(
         cls, path: Path | str | None = None, passphrase: str | None = None
-    ) -> "MappingStore":
+    ) -> MappingStore:
         """mapping を読み込む。暗号化ファイルなら passphrase で復号する。"""
         target = Path(path) if path is not None else _default_file()
         text = target.read_text(encoding="utf-8")
@@ -94,7 +90,5 @@ class MappingStore:
         """メモリ内 mapping を消し、保存ファイルがあれば削除する（--wipe）。"""
         self._mapping.clear()
         target = Path(path) if path is not None else _default_file()
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(target)
-        except FileNotFoundError:
-            pass

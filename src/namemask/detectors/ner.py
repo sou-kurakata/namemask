@@ -1,4 +1,4 @@
-"""NER 層 
+"""NER 層
 — GiNZA による未知固有名詞の拾い上げ。
 
 決定的層（正規表現・構造ルール・辞書）で拾えない「手がかりの無い固有名詞」
@@ -47,7 +47,7 @@ class NerDetector:
         self._warned: set[str] = set()
 
     @classmethod
-    def from_config(cls, config: Config) -> "NerDetector":
+    def from_config(cls, config: Config) -> NerDetector:
         ner = config.section("ner")
         return cls(
             model=ner.get("engine", "ja_ginza"),
