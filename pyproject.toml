@@ -1,6 +1,6 @@
 [project]
 name = "namemask"
-version = "0.1.0"
+version = "0.1.1"
 description = "Mask Japanese PII locally before sending text to an external AI, then restore it."
 readme = "README.md"
 requires-python = ">=3.10"
