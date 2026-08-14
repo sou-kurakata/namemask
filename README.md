@@ -5,9 +5,9 @@
 [![CI](https://github.com/sou-kurakata/namemask/actions/workflows/ci.yml/badge.svg)](https://github.com/sou-kurakata/namemask/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/namemask.svg)](https://pypi.org/project/namemask/)
 [![Python](https://img.shields.io/pypi/pyversions/namemask.svg)](https://pypi.org/project/namemask/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sou-kurakata/namemask/blob/main/LICENSE)
 
-日本語版: **[README.ja.md](./README.ja.md)**
+日本語版: **[README.ja.md](https://github.com/sou-kurakata/namemask/blob/main/README.ja.md)**
 
 ---
 
@@ -132,7 +132,7 @@ Surface variants are expanded automatically — full-width / half-width, spaces
 and hyphens, the bare core name (`サンプル商事`), and the legal-entity suffix in
 either position (`株式会社サンプル商事` / `サンプル商事株式会社`). You list the
 canonical name, not every spelling. See
-[`data/clients.sample.csv`](./data/clients.sample.csv). Your real dictionary is
+[`data/clients.sample.csv`](https://github.com/sou-kurakata/namemask/blob/main/data/clients.sample.csv). Your real dictionary is
 a business secret: keep it out of version control (`data/clients.csv` is
 already gitignored).
 
@@ -183,7 +183,7 @@ Per-layer recall contribution, measured by removing one layer at a time:
 `structural` −36.4% · `regex` −29.4% · `denylist` −4.8% · `address` −1.9%.
 
 These numbers are enforced as CI thresholds — if a change drops them, the build
-fails. See [`docs/accuracy.md`](./docs/accuracy.md) for the methodology and the
+fails. See [`docs/accuracy.md`](https://github.com/sou-kurakata/namemask/blob/main/docs/accuracy.md) for the methodology and the
 full miss list.
 
 ---
@@ -220,7 +220,7 @@ default install:
 
 Both are fail-safe: if the model is missing or errors, the deterministic floor
 remains — the layer drops out, the pipeline does not. See
-[`docs/design.md`](./docs/design.md).
+[`docs/design.md`](https://github.com/sou-kurakata/namemask/blob/main/docs/design.md).
 
 ---
 
@@ -262,14 +262,14 @@ These are invariants, not goals. They are enforced by tests.
   (`pip install namemask[crypto]`, passphrase via the `NAMEMASK_PASSPHRASE`
   environment variable).
 
-No warranty of any kind — see [LICENSE](./LICENSE).
+No warranty of any kind — see [LICENSE](https://github.com/sou-kurakata/namemask/blob/main/LICENSE).
 
 ---
 
 ## Scope of this repository
 
 This repository is the **detection engine and CLI**. That is deliberate — see
-[ADR-0011](./docs/adr/0011-scope-oss-repo-to-core-and-cli.md).
+[ADR-0011](https://github.com/sou-kurakata/namemask/blob/main/docs/adr/0011-scope-oss-repo-to-core-and-cli.md).
 
 An interactive review UI (un-mask a false positive, add a missed entity by
 selecting text) and a Windows desktop build exist as a separate project and are
@@ -285,11 +285,11 @@ decide whether the UI is folded back in for v0.2.0.
 
 | | |
 |---|---|
-| [`docs/design.md`](./docs/design.md) | Architecture and detection-layer design |
-| [`docs/accuracy.md`](./docs/accuracy.md) | Golden corpus, evaluation method, measured results |
-| [`docs/security.md`](./docs/security.md) | Threat model, invariants, vulnerability reporting |
-| [`docs/adr/`](./docs/adr/) | Architecture Decision Records — why it is built this way |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | How to contribute (read this before filing a detection miss) |
+| [`docs/design.md`](https://github.com/sou-kurakata/namemask/blob/main/docs/design.md) | Architecture and detection-layer design |
+| [`docs/accuracy.md`](https://github.com/sou-kurakata/namemask/blob/main/docs/accuracy.md) | Golden corpus, evaluation method, measured results |
+| [`docs/security.md`](https://github.com/sou-kurakata/namemask/blob/main/docs/security.md) | Threat model, invariants, vulnerability reporting |
+| [`docs/adr/`](https://github.com/sou-kurakata/namemask/tree/main/docs/adr/) | Architecture Decision Records — why it is built this way |
+| [`CONTRIBUTING.md`](https://github.com/sou-kurakata/namemask/blob/main/CONTRIBUTING.md) | How to contribute (read this before filing a detection miss) |
 
 The ADRs are worth a look if you are evaluating namemask — every non-obvious
 design decision is written down with the options that were rejected and why.
@@ -300,8 +300,8 @@ design decision is written down with the options that were rejected and why.
 
 Contributions are welcome — especially **detection misses**. If namemask failed
 to mask something, please file an issue with a reproduction case using
-**fictional names only**. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+**fictional names only**. See [CONTRIBUTING.md](https://github.com/sou-kurakata/namemask/blob/main/CONTRIBUTING.md).
 
 ## License
 
-MIT © sou-kurakata — see [LICENSE](./LICENSE).
+MIT © sou-kurakata — see [LICENSE](https://github.com/sou-kurakata/namemask/blob/main/LICENSE).
