@@ -21,7 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: ["3.10", "3.11", "3.12"]
+        # pyproject の classifiers が名乗る全バージョンを実際に回す
+        # （名乗るだけで検査しない、を作らない）。
+        python: ["3.10", "3.11", "3.12", "3.13"]
         include:
           - os: windows-latest
             python: "3.12"
