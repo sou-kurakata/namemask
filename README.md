@@ -139,6 +139,28 @@ canonical name, not every spelling. See
 a business secret: keep it out of version control (`data/clients.csv` is
 already gitignored).
 
+> **Known limitation — half-width katakana with a (han)dakuten is not covered.**
+> Normalization is applied character by character to keep offsets exact, so a
+> sequence that is split across code points in the source (`ﾌ` + `ﾟ`) is not
+> recombined, and `ｻﾝﾌﾟﾙ` will not match a dictionary entry spelled `サンプル`.
+> Half-width katakana **without** a dakuten matches fine. Until this is fixed
+> ([#4](https://github.com/sou-kurakata/namemask/issues/4)), add the half-width
+> spelling as an alias — the key side goes through the same folding, so it
+> matches:
+>
+> ```console
+> $ cat clients.csv
+> name,type,aliases
+> 株式会社サンプル商事,ORGANIZATION,サンプル|Sample Trading|ｻﾝﾌﾟﾙ
+>
+> $ echo 'ｻﾝﾌﾟﾙの件でご連絡しました。' \
+>     | namemask mask --no-ner --clients clients.csv --no-save
+> === マスク結果: 1 件 ===
+>   [[組織_1]]      組織      ｻﾝﾌﾟﾙ   <- denylist
+> ※ 外部AIへ送る前に、上記の検出内容を必ずレビューしてください。
+> [[組織_1]]の件でご連絡しました。
+> ```
+
 ### As a library
 
 ```python
