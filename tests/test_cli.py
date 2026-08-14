@@ -150,6 +150,74 @@ def test_mask_html_review(tmp_path: Path, clients_csv: str) -> None:
     assert "[[組織_1]]" in doc and "検出根拠" in doc
 
 
+def test_html_review_file_is_restrictive(tmp_path: Path, clients_csv: str) -> None:
+    """--html の出力は原文を含む機密なので 0o600 で作成される（mapping と同格・issue #1）。
+
+    `-o` のマスク済み出力は外部AIへ渡す前提の成果物なので既定のままでよい。
+    ここで守るのは「原文を含むファイル」だけ。
+    """
+    import os
+
+    src = tmp_path / "in.txt"
+    src.write_text(TEXT, encoding="utf-8")
+    html = tmp_path / "review.html"
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(tmp_path / "m.txt"),
+            "-m",
+            str(tmp_path / "map.json"),
+            "--html",
+            str(html),
+        ]
+    )
+    assert rc == 0
+    assert html.exists()
+    if os.name == "posix":
+        assert (html.stat().st_mode & 0o777) == 0o600
+
+
+def test_html_review_does_not_inherit_loose_permissions(tmp_path: Path, clients_csv: str) -> None:
+    """既に 0o644 で存在するファイルへ上書きしても、緩いままにしない（mapping と同じ）。
+
+    open() の O_CREAT モードは既存ファイルには適用されないので、
+    作り直さないとこの経路だけ 0o644 のまま原文が書き込まれる。
+    """
+    import os
+
+    if os.name != "posix":
+        pytest.skip("パーミッションは POSIX でのみ実効")
+
+    src = tmp_path / "in.txt"
+    src.write_text(TEXT, encoding="utf-8")
+    html = tmp_path / "review.html"
+    html.write_text("古い内容", encoding="utf-8")
+    os.chmod(html, 0o644)
+
+    rc = main(
+        [
+            "mask",
+            str(src),
+            "--no-ner",
+            "--clients",
+            clients_csv,
+            "-o",
+            str(tmp_path / "m.txt"),
+            "-m",
+            str(tmp_path / "map.json"),
+            "--html",
+            str(html),
+        ]
+    )
+    assert rc == 0
+    assert (html.stat().st_mode & 0o777) == 0o600
+
+
 def test_mask_encrypt_requires_env(tmp_path: Path, clients_csv: str, monkeypatch) -> None:
     monkeypatch.delenv("NAMEMASK_PASSPHRASE", raising=False)
     src = tmp_path / "in.txt"

@@ -101,7 +101,7 @@ mapping は**カレントディレクトリ配下**の `.session/mapping.json` �
 | `--address` | 住所・郵便番号も検出する（**既定 off**） |
 | `--no-ner` | NER 層を使わない（決定的層のみ・高速） |
 | `--llm` | ローカル Ollama の検証パスを後段に付ける（**追加専用**） |
-| `--html report.html` | レビュー用の単一HTMLを出力（外部CDN・外部JS不使用） |
+| `--html report.html` | レビュー用の単一HTMLを出力（外部CDN・外部JS不使用・`0600`） |
 | `--encrypt` | mapping を AES 認証暗号で保存（`NAMEMASK_PASSPHRASE` が必要） |
 | `--no-save` | mapping をファイルに書かない（メモリのみ） |
 | `--quiet` | 検出レポート／警告を表示しない |
@@ -114,11 +114,13 @@ mapping は**カレントディレクトリ配下**の `.session/mapping.json` �
 
 ```console
 $ namemask mask memo.txt --no-ner --address --html review.html -o masked.txt
-レビューHTML: review.html（原文を含む。外部に出さないこと）
+レビューHTML: review.html（原文を含む生の機密。外部に出さないこと。レビュー後は削除推奨）
 ```
 
 外部CDN・外部JS・ネットワークアクセスを一切使わない。
 ただし**このHTMLは原文（＝機密）を含む**ので、mapping と同等に扱うこと。
+そのため **`0600` で作成する**（mapping と同じ。POSIX で実効・Windows は ACL 管理下）。
+レビューが終わったら削除すること。`-o` のマスク済み出力は機密として扱わない。
 
 ### 取引先辞書
 

@@ -102,11 +102,13 @@ highlighted, with which layer detected it and why:
 
 ```console
 $ namemask mask memo.txt --no-ner --address --html review.html -o masked.txt
-レビューHTML: review.html（原文を含む。外部に出さないこと）
+レビューHTML: review.html（原文を含む生の機密。外部に出さないこと。レビュー後は削除推奨）
 ```
 
-No CDN, no external JavaScript, no network access. Note that the page contains
-your original text, so treat it like the mapping.
+No CDN, no external JavaScript, no network access. The page contains your
+original text, so it is created with mode `0600` — the same protection the
+mapping gets (POSIX only; Windows relies on ACLs). Delete it once you are done
+reviewing. The masked output written by `-o` is not treated as secret.
 
 ### Your client dictionary
 
