@@ -35,6 +35,7 @@ AIの応答に含まれるプレースホルダを元の固有名詞に戻す。
 
 ```bash
 pip install namemask
+namemask --version
 ```
 
 **辞書ファイルもモデルのダウンロードも不要。** 決定的層だけで即座に動く。
@@ -106,6 +107,7 @@ mapping は**カレントディレクトリ配下**の `.session/mapping.json` �
 | `--no-save` | mapping をファイルに書かない（メモリのみ） |
 | `--quiet` | 検出レポート／警告を表示しない |
 | `--wipe`（`unmask`） | 復元後に mapping を破棄する |
+| `--version` | バージョンを表示する（不具合報告に添えること） |
 
 ### 送信前のレビュー
 
