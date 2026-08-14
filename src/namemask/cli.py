@@ -83,6 +83,30 @@ def _write_output(path: str | None, text: str) -> None:
             f.write(text)
 
 
+def _write_review_html(path: str, html: str) -> None:
+    """レビューHTMLを 0o600 で書き出す。
+
+    このファイルは**原文（＝機密）をそのまま含む**ので、mapping（`core/mapping.py`）と
+    同じ水準で保護する。出力先は利用者が任意に指定でき、共有ディレクトリに置かれうる。
+
+    - 既存ファイルの緩いパーミッションを引き継がないよう、作り直してから書く
+      （`O_CREAT` のモードは既存ファイルには適用されない）。
+    - `newline=""` で書く。原文の CRLF をそのまま埋め込むので、変換すると CR が
+      二重化してレビュー画面の改行が原文とずれる。
+    - POSIX で実効。Windows は ACL 管理下なので chmod が効かなくても書き出しは止めない。
+    """
+    target = Path(path)
+    with contextlib.suppress(FileNotFoundError):
+        os.remove(target)
+    fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as f:
+            f.write(html)
+    finally:
+        with contextlib.suppress(OSError):
+            os.chmod(target, 0o600)
+
+
 def _render_report(result: MaskResult) -> str:
     lines = [f"=== マスク結果: {len(result.report)} 件 ==="]
     for item in result.report:
@@ -119,11 +143,12 @@ def _cmd_mask(args: argparse.Namespace) -> int:
         enc = "（AES暗号化）" if pw else "（生の機密。復元後は `unmask --wipe` で破棄推奨）"
         print(f"mapping 保存: {saved}{enc}", file=sys.stderr)
     if args.html:
-        # 原文の CRLF をそのまま埋め込むので newline="" で書く（変換すると CR が
-        # 二重化して、レビュー画面の改行が原文とずれる）。
-        with open(args.html, "w", encoding="utf-8", newline="") as f:
-            f.write(render_review_html(text, result))
-        print(f"レビューHTML: {args.html}（原文を含む。外部に出さないこと）", file=sys.stderr)
+        _write_review_html(args.html, render_review_html(text, result))
+        print(
+            f"レビューHTML: {args.html}"
+            "（原文を含む生の機密。外部に出さないこと。レビュー後は削除推奨）",
+            file=sys.stderr,
+        )
     if not args.quiet:
         print(_render_report(result), file=sys.stderr)
     return 0
