@@ -128,8 +128,8 @@ def test_propagation_matches_fullwidth_variant_via_shadow() -> None:
 
 def test_core_name_propagation_min_length_guard() -> None:
     # コア名が3文字未満（誤マッチ多発帯）は伝播しない（§5.4 安全弁と同じ閾値）。
-    text = "株式会社丸和を訪問。丸和の担当は明日戻ります。"
+    text = "株式会社ソラを訪問。ソラの担当は明日戻ります。"
     spans = [Span(0, 6, EntityType.ORGANIZATION, sources=("structural",))]
     merged = merge_spans(text, spans)
-    second = text.find("丸和", 6)
+    second = text.find("ソラ", 6)
     assert all(s.start != second for s in merged), merged
