@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import importlib.metadata
 import os
 import sys
 from pathlib import Path
@@ -184,11 +185,25 @@ def _cmd_wipe(args: argparse.Namespace) -> int:
     return 0
 
 
+def _version() -> str:
+    """インストール済みメタデータからバージョンを取る（pyproject と二重管理しない）。
+
+    未インストールのソースツリーから直接動かした場合だけ `unknown` になる。
+    """
+    try:
+        return importlib.metadata.version("namemask")
+    except importlib.metadata.PackageNotFoundError:  # pragma: no cover - 通常は起きない
+        return "unknown"
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="namemask",
         description="完全ローカルの機密テキスト・マスキング/復元ツール",
     )
+    # サブコマンドは required だが、version アクションはその検査より先に終了する。
+    # バグ報告でバージョンを1コマンドで確認できるようにするためのもの。
+    p.add_argument("--version", action="version", version=f"namemask {_version()}")
     sub = p.add_subparsers(dest="command", required=True)
 
     default_mapping = str(paths.mapping_path())

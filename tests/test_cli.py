@@ -218,6 +218,21 @@ def test_html_review_does_not_inherit_loose_permissions(tmp_path: Path, clients_
     assert (html.stat().st_mode & 0o777) == 0o600
 
 
+def test_version_flag_prints_version(capsys) -> None:
+    """`namemask --version` が動く（issue #5）。
+
+    サブコマンドは required だが、version アクションはその検査より先に終了する。
+    バグ報告でバージョンを1コマンドで確認できることが目的。
+    """
+    from importlib.metadata import version as _pkg_version
+
+    with pytest.raises(SystemExit) as e:
+        main(["--version"])
+    assert e.value.code == 0
+    out = capsys.readouterr().out
+    assert out.strip() == f"namemask {_pkg_version('namemask')}"
+
+
 def test_mask_encrypt_requires_env(tmp_path: Path, clients_csv: str, monkeypatch) -> None:
     monkeypatch.delenv("NAMEMASK_PASSPHRASE", raising=False)
     src = tmp_path / "in.txt"

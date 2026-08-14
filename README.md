@@ -36,6 +36,7 @@ to the AI for you.** You copy and paste, so you always see what leaves your mach
 
 ```bash
 pip install namemask
+namemask --version
 ```
 
 No dictionary file or model download is required — the deterministic layers work
