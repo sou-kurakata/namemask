@@ -33,8 +33,8 @@ Context / Options considered / Decision / Consequences の4節。
 
 ## Open source release
 
-これら2本は旧プラン文書に対応する ADR が無い**新規の決定**。
-`PLAN.md` で下した判断を、蒸し返さないために決定として固定したもの。
+これら2本はプロトタイプ期に対応する ADR が無い**新規の決定**。
+OSS 化の計画段階で下した判断を、蒸し返さないために決定として固定したもの。
 
 | # | Title | Legacy |
 |---|---|---|
@@ -45,7 +45,8 @@ Context / Options considered / Decision / Consequences の4節。
 
 ## 別プロジェクトにある ADR
 
-旧 `Planv3.md` §12 の以下は `namemask-app` の担当。参照が必要なら旧フォルダを見る。
+以下はプロトタイプ期に決めたもののうち `namemask-app` の担当になった分（ADR-0011）。
+このリポジトリには対応する ADR を置かず、一覧だけを残す。
 
 pywebview 採用 / PyInstaller onedir / session方式の mapping 保持 / NER非同梱ビルド /
 clients.csv 非同梱 / per-span items / Host・Origin・token 検証 / remask アルゴリズム /
