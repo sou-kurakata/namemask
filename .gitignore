@@ -48,7 +48,12 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# ==== ローカルの作業用（公開リポジトリに含めない）====
+# エージェント設定・hook・作業メモ・実行計画。いずれも手元の作業文脈に依存し、
+# 公開リポジトリの読者が検証できないため追跡しない。
+.claude/
+scratchpad/
+PLAN.md
+
 # ==== その他 ====
 *.zip
-.claude/settings.local.json
-PLAN.md
