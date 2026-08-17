@@ -1,7 +1,7 @@
 # ADR-0006: flashtext ではなく pyahocorasick を使う
 
 - **Status**: Accepted
-- **Date**: 2026-07-30 <!-- 旧 Planv2.md §13 からの移設日。原決定はプロトタイプ期（日付未記録） -->
+- **Date**: 2026-07-30 <!-- ADR として起こした日。原決定はプロトタイプ期（日付未記録） -->
 - **Legacy ID**: ADR-006
 
 ## Context
