@@ -19,7 +19,7 @@ Context / Options considered / Decision / Consequences の4節。
 | [0001](./0001-thin-in-house-pipeline-over-generic-pii-framework.md) | 汎用PIIフレームワーク（Presidio等）を使わず薄い自前パイプラインにする | ADR-001 |
 | [0002](./0002-build-eval-harness-and-core-before-detectors.md) | 評価基盤とコアエンジンを検出器より先に作る | ADR-002 |
 | [0003](./0003-deterministic-layers-before-ner.md) | NER より先に決定的層で recall の下限を確保する | ADR-003 |
-| [0004](./0004-favor-recall-over-precision.md) | スコア閾値を低くし precision を意図的に犠牲にする | ADR-004 |
+| [0004](./0004-favor-recall-over-precision.md) | score による関門を置かず precision を意図的に犠牲にする | ADR-004 |
 | [0005](./0005-llm-as-additive-verifier-not-orchestrator.md) | LLM をオーケストレーターにしない（追加専用の検証者に限定） | ADR-005 |
 | [0006](./0006-pyahocorasick-over-flashtext.md) | flashtext ではなく pyahocorasick を使う | ADR-006 |
 | [0007](./0007-dictionary-matching-on-folded-second-shadow.md) | 辞書照合は fold 済み第2影テキスト上で行う | ADR-007 |
