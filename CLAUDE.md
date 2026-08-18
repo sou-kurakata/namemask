@@ -159,7 +159,8 @@ make lint         # ruff check + ruff format --check
 
 1. **受け入れ基準テストを先に書く。** TDD を維持する（既存方針の継承）。
 2. **新しい設計判断が発生したら ADR を書いてから実装する。**
-   `docs/adr/template.md` をコピーし、連番で追加。Context / Decision / Consequences の3節。
+   `docs/adr/template.md` をコピーし、連番で追加。
+   Context / Options considered / Decision / Consequences の4節。
    採用しなかった選択肢とその理由を必ず残す。
 3. **設計文書は追記ではなく置換する。**
    `docs/design.md` は常に「**現在の**設計」だけを書く。
