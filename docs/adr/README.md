@@ -22,7 +22,7 @@ Context / Options considered / Decision / Consequences の4節。
 | [0004](./0004-favor-recall-over-precision.md) | score による関門を置かず precision を意図的に犠牲にする | ADR-004 |
 | [0005](./0005-llm-as-additive-verifier-not-orchestrator.md) | LLM をオーケストレーターにしない（追加専用の検証者に限定） | ADR-005 |
 | [0006](./0006-pyahocorasick-over-flashtext.md) | flashtext ではなく pyahocorasick を使う | ADR-006 |
-| [0007](./0007-dictionary-matching-on-folded-second-shadow.md) | 辞書照合は fold 済み第2影テキスト上で行う | ADR-007 |
+| [0007](./0007-dictionary-matching-on-folded-second-shadow.md) | 辞書照合は fold 正規化テキスト上で行う | ADR-007 |
 
 ## Paths and configuration
 
