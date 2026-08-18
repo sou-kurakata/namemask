@@ -54,6 +54,7 @@ Thumbs.db
 .claude/
 scratchpad/
 PLAN.md
+0012-claude-code-agent-design.md
 
 # ==== その他 ====
 *.zip
