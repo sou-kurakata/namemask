@@ -51,8 +51,11 @@ SOURCE_PRIORITY: dict[str, int] = {
     "regex": 20,
     "ner": 10,
     "llm": 5,
-    "stub": 100,
 }
+# テスト用スタブ検出器（detectors/stub.py）は登録しない。stub は golden /
+# round-trip / eval のいずれでも単独で走り、実検出器と型競合を起こす場面が
+# ないため優先度を持たせる理由がなく、万一本番経路に混入した場合に他層へ
+# 勝たせないため。未登録のソースは _span_priority が 0 として扱う（ADR-0002）。
 
 
 @dataclass(frozen=True)
