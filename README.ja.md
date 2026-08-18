@@ -89,8 +89,8 @@ mapping は**カレントディレクトリ配下**の `.session/mapping.json` �
   対象テキストにどちらかが含まれるなら必ず付ける。
 - **`--no-ner` は起動時の通知を止める。** CLI は既定で NER 層を試み、`ner` extra が
   未導入だと `NER disabled: spacy import failed (ModuleNotFoundError). Deterministic
-  layers remain.` を stderr に出す。これは**エラーではなく fail-safe**（決定的層の床は
-  残る）だが、NER を使わないと決めているなら `--no-ner` で明示的に飛ばせる。
+  layers remain.` を stderr に出す。これは**エラーではなく fail-safe**（決定的層による
+  マスクは残る）だが、NER を使わないと決めているなら `--no-ner` で明示的に飛ばせる。
 
 ### 主なオプション
 
@@ -257,7 +257,7 @@ NER・LLM off（`make eval` ＝ `python tests/eval.py --address`）:
   解除・変更は絶対にできない。エンドポイントはループバック限定で、明示的に指定しない限り off。
   Ollama は外部プロセスなので、追加の Python 依存は無い。
 
-どちらも fail-safe。モデル未導入・ロード失敗でも決定的層の床は残る
+どちらも fail-safe。モデル未導入・ロード失敗でも決定的層によるマスクは残る
 ——層が抜けるだけで、パイプラインは止まらない。詳細は [`docs/design.md`](./docs/design.md)。
 
 ### 日本語のどこを手がかりにしているか
