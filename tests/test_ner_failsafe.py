@@ -2,7 +2,7 @@
 
 このファイルは importorskip を置かない。spacy/GiNZA が無い環境こそ fail-safe が
 効くべき環境であり、そこで skip されては安全保証が無検証になる（P5 レビュー指摘）。
-モデルがロードできない状況で NER が [] を返し、決定的マスクの床を壊さないことを、
+モデルがロードできない状況で NER が [] を返し、決定的層によるマスクを壊さないことを、
 spacy の有無に関わらず確認する。
 """
 
@@ -22,7 +22,7 @@ def test_ner_failsafe_on_unloadable_model() -> None:
 
 
 def test_ner_failsafe_pipeline_still_masks_deterministically(clients_csv: str) -> None:
-    """NER がロード不能でも、決定的層の床は残る（use_ner=True でも安全）。"""
+    """NER がロード不能でも、決定的層によるマスクは残る（use_ner=True でも安全）。"""
     from namemask.config import Config
     from namemask.pipeline.build import make_pipeline
     from namemask.types import EntityType
@@ -34,6 +34,6 @@ def test_ner_failsafe_pipeline_still_masks_deterministically(clients_csv: str) -
             det._model = "__no_such_model__"
     spans = pipe.detect("株式会社アオヤマ商事の山田様より連絡がありました。")
     got = {s.type for s in spans}
-    # 決定的層で ORGANIZATION と PERSON は拾える（NER 不在でも床が残る）。
+    # 決定的層で ORGANIZATION と PERSON は拾える（NER 不在でもマスクは残る）。
     assert EntityType.ORGANIZATION in got
     assert EntityType.PERSON in got
