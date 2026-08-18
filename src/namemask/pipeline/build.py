@@ -23,6 +23,12 @@ from namemask.detectors.structural_ja import StructuralDetector
 from namemask.pipeline.merger import merge_spans
 from namemask.types import Span
 
+# 組み立て可能な層名の全体集合（optional 層を含む）。層の追加はここと
+# build_default_pipeline の層テーブルの両方に手を入れないと通らない。
+# 名前からクラスを引くレジストリではないので、外部の文字列で層を注入できない
+# （テスト用スタブ検出器が本番経路に来ない根拠のひとつ。ADR-0002）。
+KNOWN_LAYER_NAMES: tuple[str, ...] = ("regex", "structural", "denylist", "address", "ner")
+
 
 def build_default_pipeline(
     config: Config | None = None,
@@ -64,11 +70,23 @@ def build_default_pipeline(
     if use_ner:
         all_layers["ner"] = NerDetector.from_config(cfg)
 
-    selected = (
-        all_layers
-        if layers is None
-        else {name: det for name, det in all_layers.items() if name in layers}
-    )
+    if layers is None:
+        return list(all_layers.values())
+
+    unknown = sorted(layers - set(KNOWN_LAYER_NAMES))
+    if unknown:
+        raise ValueError(
+            f"未知の層名: {unknown}。指定できるのは {sorted(KNOWN_LAYER_NAMES)}。"
+            "（`layers` は既知の層への絞り込みであり、検出器の登録口ではない）"
+        )
+
+    selected = {name: det for name, det in all_layers.items() if name in layers}
+    if not selected:
+        raise ValueError(
+            f"層が1つも残らない指定: layers={sorted(layers)}。"
+            "検出ゼロのパイプラインは作らない（recall 最優先の不変条件）。"
+            "有効な層は use_ner / use_address フラグにも依存する。"
+        )
     return list(selected.values())
 
 
@@ -125,6 +143,14 @@ def make_pipeline(
     disabled に層名（regex/structural/denylist/ner/address/llm）を渡すとその層を除く。
     use_llm=True または llm_client 注入で LLM 検証パスを後段に付ける。
     """
+    if disabled is not None and disabled not in (*KNOWN_LAYER_NAMES, "llm"):
+        raise ValueError(
+            f"未知の層名: {disabled!r}。無効化できるのは "
+            f"{[*sorted(KNOWN_LAYER_NAMES), 'llm']}。"
+            "（typo を黙って no-op にすると eval のアブレーションが"
+            "「この層を抜いても指標が変わらない」という偽値を出す）"
+        )
+
     names = ALL_LAYER_NAMES + (("address",) if use_address else ()) + (("ner",) if use_ner else ())
     layers = set(names) - ({disabled} if disabled else set())
     detectors = build_default_pipeline(
