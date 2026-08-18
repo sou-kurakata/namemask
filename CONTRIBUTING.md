@@ -161,6 +161,9 @@ Copy [`docs/adr/template.md`](./docs/adr/template.md), take the next number, and
 record the options you rejected and why. The index is
 [`docs/adr/README.md`](./docs/adr/README.md).
 
+The filename is a stable English slug of the decision (`NNNN-<slug>.md`). Titles
+get rewritten; filenames do not, so published URLs keep working.
+
 ## Documentation policy
 
 `docs/design.md` describes the **current** design only. Do not append history

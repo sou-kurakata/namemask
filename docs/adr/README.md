@@ -7,6 +7,11 @@
 Context / Options considered / Decision / Consequences の4節。
 **採用しなかった選択肢とその理由を必ず残す。**
 
+ファイル名は決定を表す英語のスラッグで `NNNN-<slug>.md` の形。タイトルを
+書き換えてもファイル名は変えない。公開リポジトリの URL が固定されることを
+優先する（ADR-0004 はタイトルを改めたが `0004-favor-recall-over-precision.md`
+のまま）。
+
 `Legacy ID` は旧プロトタイプのプラン文書での番号。コード中のコメントや docstring に
 残っている `ADR-001` `ADR-106` 等の参照はこの列で引く。
 
